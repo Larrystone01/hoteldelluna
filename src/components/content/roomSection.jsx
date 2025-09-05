@@ -1,40 +1,13 @@
 "use client";
-import Slider from "react-slick";
 import { useGlobalContext } from "@/context/context";
+import { useState, useEffect } from "react";
 import { BedSingle, CircleArrowRight, CircleArrowLeft } from "lucide-react";
 import Button from "../Button";
 
-const CustomPrevArrow = ({ onClick, className }) => {
-  return (
-    <button
-      className={`absolute right-18 -bottom-15 z-10 rounded-full p-2 shadow-lg transition-all ${
-        className?.includes("slick-disabled")
-          ? "bg-gray-300 text-gray-400 cursor-not-allowed"
-          : "bg-white text-black hover:bg-gray-100"
-      }`}
-      onClick={onClick}
-    >
-      <CircleArrowLeft />
-    </button>
-  );
-};
-const CustomNextArrow = ({ onClick, className }) => {
-  return (
-    <button
-      className={`absolute right-3 -bottom-15 z-10 rounded-full p-2 shadow-lg transition-all ${
-        className?.includes("slick-disabled")
-          ? "bg-gray-300 text-gray-400 cursor-not-allowed"
-          : "bg-white text-black hover:bg-gray-100 cursor-pointer"
-      }`}
-      onClick={onClick}
-    >
-      <CircleArrowRight />
-    </button>
-  );
-};
-
 export default function HeroRoomShowCase() {
   const { imageData } = useGlobalContext();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(0);
 
   const getImageByCategory = () => {
     const categories = {};
@@ -47,34 +20,53 @@ export default function HeroRoomShowCase() {
     return Object.values(categories);
   };
 
-  const settings = {
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    infinite: false,
-    arrows: true,
-    nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />,
-    // centerMode: true,
-    centerPadding: "20px",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+  const HeroSectionRoomsShowcase = getImageByCategory();
+
+  // Auto-scroll functionality
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentIndex(
+  //       (prevIndex) => (prevIndex + 1) % HeroSectionRoomsShowcase.length
+  //     );
+  //   }, 3000); // Change slide every 3 seconds
+
+  //   return () => clearInterval(interval);
+  // }, [HeroSectionRoomsShowcase.length]);
+
+  // const formatPrice = (price) => {
+  //   return ₦${price.toLocaleString()};
+  // };
+
+  const handleManualScroll = (direction) => {
+    setCurrentIndex((prevIndex) => {
+      if (direction === "next") {
+        return Math.min(prevIndex + 1, HeroSectionRoomsShowcase.length - 1);
+      } else {
+        return Math.max(prevIndex - 1, 0);
+      }
+    });
   };
 
-  const HeroSectionRoomsShowcase = getImageByCategory();
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesPerView(3); // desktop
+      } else if (window.innerWidth >= 768) {
+        setSlidesPerView(2); // tablet
+      } else {
+        setSlidesPerView(1); // mobile
+      }
+    };
+
+    handleResize(); // run once on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const totalSlides = HeroSectionRoomsShowcase.length;
+  const maxIndex = totalSlides - slidesPerView;
+  const clampedIndex = Math.min(currentIndex, maxIndex);
+  const translateX = `-${(clampedIndex * 100) / slidesPerView}%`;
+
   return (
     <>
       <section className="relative">
@@ -90,35 +82,90 @@ export default function HeroRoomShowCase() {
             </p>
             <Button label={"ALL ROOMS"} width="150px" href="/rooms" />
           </div>
-          <div className="slider-container relative">
-            <Slider {...settings}>
-              {HeroSectionRoomsShowcase.map((image) => (
-                <div key={image.id} className="">
-                  <div className="bg-white flex flex-col group max-w-[390px] mx-auto overflow-hidden">
-                    <div className="w-full h-[220px] overflow-hidden">
-                      <img
-                        src={image.src}
-                        alt={image.roomCategory}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                      />
-                    </div>
-                    <div className="p-3 flex flex-col space-y-7">
-                      <h1 className="flex gap-2 items-center">
-                        <BedSingle size={15} />{" "}
-                        <span>Occupants: {image.noOfOccupant}</span>
-                      </h1>
-                      <p className="text-[25px] uppercase">{image.name}</p>
-                      <div className="price flex justify-between items-center">
-                        <p>
-                          <span className="text-[25px] text-yellow-300">{image.price}</span> per night
-                        </p>
-                        <Button href="/book" label="BOOK" />
+
+          <div className="max-w-7xl mx-auto">
+            <div className="relative">
+              {/* Carousel Container */}
+              <div className="overflow-hidden pb-7">
+                <div
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{
+                    transform: `translateX(${translateX})`,
+                  }}
+                >
+                  {HeroSectionRoomsShowcase.map((room) => (
+                    <div
+                      key={room.id}
+                      className="md:w-1/2 lg:w-1/3 w-full flex-shrink-0 px-3"
+                    >
+                      <div className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 group">
+                        {/* Room Image */}
+                        <div className="relative h-64 overflow-hidden">
+                          <img
+                            src={room.src}
+                            alt={room.name}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                          />
+                          <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            Premium
+                          </div>
+                        </div>
+
+                        {/* Room Details */}
+                        <div className="p-6 flex flex-col space-y-5">
+                          <div className="flex items-center text-gray-600">
+                            <BedSingle size={16} className="mr-1" />
+                            <span className="text-sm">
+                              Adults: {room.noOfOccupant}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-2xl font-bold text-gray-900">
+                              {room.name}
+                            </h3>
+                          </div>
+
+                          {/* Price and Book Button */}
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="text-3xl font-bold text-yellow-300 flex items-center space-x-1">
+                                <span>{room.price}</span>
+                                <span className="text-[14px] text-gray-500">
+                                  per night
+                                </span>
+                              </div>
+                            </div>
+                            <Button label="BOOK" />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </Slider>
+              </div>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={() => handleManualScroll("prev")}
+                className={`absolute right-18 -bottom-18 transform -translate-y-1/2 bg-opacity-90 hover:bg-opacity-100 text-gray-800 p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 ${
+                  currentIndex === 0
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-white cursor-pointer"
+                }`}
+              >
+                <CircleArrowLeft />
+              </button>
+              <button
+                onClick={() => handleManualScroll("next")}
+                className={`absolute right-4 -bottom-18 transform -translate-y-1/2 bg-opacity-90 hover:bg-opacity-100 text-gray-800 p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 ${
+                  currentIndex === maxIndex
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-white cursor-pointer"
+                }`}
+              >
+                <CircleArrowRight />
+              </button>
+            </div>
           </div>
         </div>
       </section>
