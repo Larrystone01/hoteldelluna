@@ -3,12 +3,12 @@ import Slider from "@/components/content/backgroundSlider";
 import Button from "@/components/Button";
 import SubHero from "@/components/content/subHero";
 import { GlobalContextProvider } from "@/context/context";
-import { imageData } from "@/lib/image";
+import { roomData } from "@/lib/image";
 import HeroRoomShowCase from "@/components/content/roomSection";
 
 export default function Home() {
   return (
-    <GlobalContextProvider imageData={imageData}>
+    <GlobalContextProvider imageData={roomData}>
       <Slider interval={4000}>
         <NavAndFooterWrap>
           <div className="container px-6">

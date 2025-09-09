@@ -1,4 +1,4 @@
-export const imageData = [
+export const roomData = [
   {
     id: 1,
     src: "/images/deluxe-haven.jpeg",
@@ -78,5 +78,72 @@ export const imageData = [
     price: "#120,000",
     noOfOccupant: 2,
     roomCategory: "luxe comfort room",
+  },
+];
+
+export const facilitiesData = [
+  {
+    id: 1,
+    name: "Indoor Gym",
+    src: "/images/gym-interior.jpeg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "Gym",
+  },
+  {
+    id: 2,
+    name: "Lobby",
+    src: "/images/lobby.jpg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "hotel lobby",
+  },
+  {
+    id: 3,
+    name: "The Restaurant",
+    src: "/images/restaurant.jpeg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "restaurant",
+  },
+  {
+    id: 4,
+    name: "Lounge Bar",
+    src: "/images/lounge-bar.jpg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "lounge",
+  },
+  {
+    id: 5,
+    name: "Event Hall & Conference",
+    src: "/images/hall.jpg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "banquet hall",
+  },
+  {
+    id: 6,
+    name: "Meeting Room",
+    src: "/images/meeting-room.jpg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "meeting room",
+  },
+  {
+    id: 7,
+    name: "Swimming Pool",
+    src: "/images/swimming-pool.jpg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "swimming pool",
+  },
+  {
+    id: 8,
+    name: "Spa",
+    src: "/images/spa.jpeg",
+    description:
+      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+    category: "spa",
   },
 ];

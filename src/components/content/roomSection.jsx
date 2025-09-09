@@ -162,6 +162,7 @@ export default function HeroRoomShowCase() {
                     ? "bg-gray-600 cursor-not-allowed"
                     : "bg-white cursor-pointer"
                 }`}
+                disabled={currentIndex === maxIndex}
               >
                 <CircleArrowRight />
               </button>

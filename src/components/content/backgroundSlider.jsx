@@ -9,10 +9,12 @@ export default function Slider({
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, interval);
-    return () => clearInterval(timer);
+    if (images.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, interval);
+      return () => clearInterval(timer);
+    }
   }, [interval, images.length]);
   return (
     <>
