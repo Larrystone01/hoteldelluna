@@ -10,7 +10,7 @@ export default function ServicesShowcase({ limit }) {
   const displayedData = limit ? imageData.slice(0, limit) : imageData;
   return (
     <>
-      <div className="facilities-container">
+      <div className="facilities-container overflow-hidden">
         {displayedData.map((facility, index) => (
           <div
             className="facility-container grid md:grid-cols-2 gap-6 border-b py-9"
