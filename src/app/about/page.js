@@ -20,11 +20,11 @@ export default function AboutPage() {
               </p>
             </div>
           </section>
-          <section className="py-16">
+          <section className="py-8">
             <BreadCrumbs />
             <div className="about-grid flex flex-col md:grid md:grid-cols-2 gap-8">
               <div className="about-part">
-                <h1 className="text-[60px] leading-none">
+                <h1 className="text-[30px] md:text-[60px] leading-none">
                   Start your Amazing Adventure!
                 </h1>
                 <div className="flex flex-col space-y-3 text-[16px] mt-3">
@@ -55,7 +55,7 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-              <div className="image-part relative">
+              <div className="image-part relative min-h-[500px]">
                 <Image
                   src="/images/hotel-view.jpeg"
                   alt="background-image"

@@ -76,7 +76,9 @@ export default function navbar() {
           <nav className="flex justify-between items-center">
             <div className="logo w-20">
               {/* <img src="/images/logo.jpeg" alt="hotel's logo" /> */}
-              <h1 className="text-4xl font-bold text-white">HDL</h1>
+              <Link className="text-4xl font-bold text-white" href="/">
+                HDL
+              </Link>
             </div>
             {/* Nav Dropdown */}
             <div

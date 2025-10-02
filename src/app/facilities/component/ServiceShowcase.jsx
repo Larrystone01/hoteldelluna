@@ -70,11 +70,11 @@ export default function FacilitiesShowcase({
                     className={`uppercase text-yellow-300 text-[20px] ${
                       index % 2 === 0
                         ? "flex flex-col-reverse md:flex-row md:justify-between"
-                        : "flex flex-row-reverse mr-auto gap-3"
+                        : "flex flex-col-reverse md:flex-row-reverse mr-auto gap-3"
                     }`}
                   >
                     <span>{facility.category}</span>{" "}
-                    <span className="bg-yellow-300 text-white rounded-full w-7 h-7 flex justify-center items-center">
+                    <span className="bg-yellow-300 text-white rounded-full w-7 h-7 flex justify-center items-center mb-3">
                       {facility.id}
                     </span>
                   </h3>
@@ -82,7 +82,7 @@ export default function FacilitiesShowcase({
                     {facility.name}
                   </h1>
                   <p className="pt-1">{facility.description}</p>
-                  <Link href="/facilities">
+                  <Link href="/facilities" className="mb-3">
                     <ArrowRight color="gold" />
                   </Link>
                 </motion.div>
