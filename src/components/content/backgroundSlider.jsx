@@ -21,7 +21,7 @@ export default function Slider({
       <div className="relative w-full h-screen">
         {images.map((src, index) => (
           <div
-            key={src}
+            key={index}
             className={`absolute inset-0 transition-opacity duration-2000 ${
               index === currentIndex ? "opacity-100" : "opacity-0"
             }`}

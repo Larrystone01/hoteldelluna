@@ -95,7 +95,7 @@ export const facilitiesData = [
     name: "Lobby",
     src: "/images/lobby.jpg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "The heart of the hotel. Our lobby isn’t just a waiting area — it’s your first impression of comfort and elegance. Spacious, welcoming, and staffed with attentive professionals ready to assist you, it sets the tone for your entire stay..",
     category: "hotel lobby",
   },
   {
@@ -103,7 +103,7 @@ export const facilitiesData = [
     name: "The Restaurant",
     src: "/images/restaurant.jpeg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "More than just meals — it’s an experience. Our restaurant offers a curated menu of local and international cuisine, prepared with fresh ingredients and served in a warm, welcoming setting. From breakfast buffets to fine dining dinners, we’ve got your cravings covered",
     category: "restaurant",
   },
   {
@@ -111,7 +111,7 @@ export const facilitiesData = [
     name: "Lounge Bar",
     src: "/images/lounge-bar.jpg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "The perfect spot to unwind. Sip on handcrafted cocktails, premium wines, or your favorite spirits in a stylish lounge atmosphere — whether you’re celebrating, socializing, or simply relaxing after a long day.",
     category: "lounge",
   },
   {
@@ -119,7 +119,7 @@ export const facilitiesData = [
     name: "Event Hall & Conference",
     src: "/images/hall.jpg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "A stage for unforgettable moments. From weddings to galas, our event hall combines elegant design with customizable layouts to suit any occasion. Backed by professional planning support, modern sound systems, and seamless service, we make sure your event runs flawlessly while leaving a lasting impression on every guest.",
     category: "banquet hall",
   },
   {
@@ -127,7 +127,7 @@ export const facilitiesData = [
     name: "Meeting Room",
     src: "/images/meeting-room.jpg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "Where business meets focus. Equipped with high-speed connectivity, presentation tools, and flexible seating, our meeting rooms are built to help ideas flow and decisions get made.",
     category: "meeting room",
   },
   {
@@ -135,7 +135,7 @@ export const facilitiesData = [
     name: "Swimming Pool",
     src: "/images/swimming-pool.jpg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "Not just a pool — an escape. Whether you’re starting your morning with energizing laps or unwinding under the sun with a cocktail, our poolside area is designed for relaxation and leisure. Comfortable loungers, clean facilities, and a serene atmosphere make it the perfect spot to disconnect and recharge.",
     category: "swimming pool",
   },
   {
@@ -143,7 +143,7 @@ export const facilitiesData = [
     name: "Spa",
     src: "/images/spa.jpeg",
     description:
-      "Stay active during your stay with our fully equipped fitness center. From cardio machines to free weights and yoga mats, our gym has everything you need to keep up with your routine in a comfortable, modern space.",
+      "Your escape into relaxation. Indulge in massages, facials, or full-body treatments designed to melt away stress and rejuvenate your body and mind.",
     category: "spa",
   },
 ];

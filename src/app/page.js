@@ -5,6 +5,7 @@ import SubHero from "@/components/content/subHero";
 import { GlobalContextProvider } from "@/context/context";
 import { roomData } from "@/lib/image";
 import HeroRoomShowCase from "@/components/content/roomSection";
+import FacilitiesShowcase from "./facilities/component/ServiceShowcase";
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
             </section>
             <SubHero />
             <HeroRoomShowCase />
+            <FacilitiesShowcase limit={3} btnLabel="VIEW MORE" width="150px"/>
           </div>
         </NavAndFooterWrap>
       </Slider>
