@@ -13,10 +13,10 @@ export default function AboutPage() {
           <section className="about-hero">
             <div className="flex justify-center items-center text-white h-screen text-center">
               <p className="text-[30px]">
-                "Nestled in the heart of the city, Hotel Del Luna combines
+                &quot;Nestled in the heart of the city, Hotel Del Luna combines
                 timeless elegance with modern comfort. Our mission is to create
                 unforgettable experiences for every guest by offering premium
-                services, luxurious rooms, and exceptional hospitality"
+                services, luxurious rooms, and exceptional hospitality.&quot;
               </p>
             </div>
           </section>
@@ -32,8 +32,8 @@ export default function AboutPage() {
                     Hotel Del Luna welcomes guests with exceptional service,
                     efficiency, natural warmth, and an inviting ambiance. We
                     strive to make your stay feel like a home away from home,
-                    whether you're here for business, recreation, or leisure.
-                    Our hotel offers unmatched services and facilities.
+                    whether you&apos;re here for business, recreation, or
+                    leisure. Our hotel offers unmatched services and facilities.
                   </p>{" "}
                   <p>
                     Located in a serene residential area of the city, we are
