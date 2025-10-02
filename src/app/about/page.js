@@ -22,7 +22,7 @@ export default function AboutPage() {
           </section>
           <section className="py-16">
             <BreadCrumbs />
-            <div className="about-grid grid grid-cols-2 gap-8">
+            <div className="about-grid md:grid md:grid-cols-2 gap-8">
               <div className="about-part">
                 <h1 className="text-[60px] leading-none">
                   Start your Amazing Adventure!
