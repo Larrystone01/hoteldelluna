@@ -17,7 +17,7 @@ export default function BreadCrumbs() {
             const fullPath = "/" + paths.slice(0, index + 1).join("/");
             const isLast = index === paths.length - 1;
             return (
-              <li className="capitalize flex">
+              <li className="capitalize flex" key={index}>
                 <span className="flex justify-center items-center">
                   <ChevronRight size={14} />
                 </span>
