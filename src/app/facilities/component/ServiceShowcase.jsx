@@ -27,7 +27,7 @@ export default function FacilitiesShowcase({
             <span className="w-10 h-[2px] bg-yellow-300"></span>
             facilities{" "}
           </h1>
-          <div className="text-button flex items-center">
+          <div className="text-button flex flex-col space-y-6 md:flex-row items-center">
             <div className="text flex-1">
               <h1 className="text-[35px]">
                 ENJOY COMPLETE & BEST QUALITY FACILITIES
@@ -38,7 +38,7 @@ export default function FacilitiesShowcase({
                 experience in luxury and relaxation.
               </p>
             </div>
-            <div className="button flex-1">
+            <div className="button flex-1 self-start">
               <Button width={width} label={btnLabel} href="/facilities" />
             </div>
           </div>
