@@ -12,7 +12,7 @@ export default function Home() {
     <GlobalContextProvider imageData={roomData}>
       <Slider interval={4000}>
         <NavAndFooterWrap>
-          <div className="container px-6">
+          <div className="container px-6 mx-auto">
             <section className="text-white">
               <div className="hero-container flex justify-center items-center h-screen">
                 <div className="hero text-center">
@@ -31,7 +31,7 @@ export default function Home() {
             </section>
             <SubHero />
             <HeroRoomShowCase />
-            <FacilitiesShowcase limit={3} btnLabel="VIEW MORE" width="150px"/>
+            <FacilitiesShowcase limit={3} btnLabel="VIEW MORE" width="150px" />
           </div>
         </NavAndFooterWrap>
       </Slider>
