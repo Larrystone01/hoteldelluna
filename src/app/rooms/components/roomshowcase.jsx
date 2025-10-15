@@ -45,7 +45,7 @@ export default function RoomDisplay() {
                   </h1>
                   <p>
                     from{" "}
-                    <span className="text-yellow-300 font-bold">
+                    <span className="text-yellow-800 font-bold">
                       {room.price}
                     </span>{" "}
                     per night
