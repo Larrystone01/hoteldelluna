@@ -14,10 +14,21 @@ export default function RoomDisplay() {
     setCurrentPage(page);
   };
   const handleNext = () => {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((prev) => {
+      if (prev < totalPages) {
+        return prev + 1;
+      }
+      return prev; // stay on the last page
+    });
   };
+
   const handlePrev = () => {
-    setCurrentPage((prev) => prev - 1);
+    setCurrentPage((prev) => {
+      if (prev > 1) {
+        return prev - 1;
+      }
+      return prev; // stay on the first page
+    });
   };
 
   return (
