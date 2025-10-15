@@ -256,3 +256,46 @@ export const facilitiesData = [
     category: "spa",
   },
 ];
+
+export const navItems = [
+  {
+    id: "home",
+    label: "HOME",
+    href: "/",
+  },
+  {
+    id: "about",
+    label: "ABOUT US",
+    href: "/about",
+  },
+  {
+    id: "services",
+    label: "SERVICES",
+    href: "/services",
+  },
+  {
+    id: "rooms",
+    label: "ROOMS",
+    href: "/rooms",
+  },
+  {
+    id: "facilities",
+    label: "FACILITIES",
+    href: "/facilities",
+  },
+  {
+    id: "booking",
+    label: "BOOK US",
+    href: "/booking",
+  },
+  {
+    id: "contact",
+    label: "CONTACT",
+    href: "/contact",
+  },
+  {
+    id: "blog",
+    label: "BLOGS",
+    href: "/blogs",
+  },
+];

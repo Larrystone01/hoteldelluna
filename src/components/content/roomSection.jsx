@@ -69,9 +69,9 @@ export default function HeroRoomShowCase() {
 
   return (
     <>
-      <section className="relative -mx-14">
+      <section className="relative">
+        <div className="absolute bg-yellow-200 inset-0 -z-10 w-screen max-w-none left-1/2 right-1/2 -mx-[50vw]"></div>
         <div className="pt-10 pb-15">
-          <div className="absolute bg-yellow-200 inset-0 -z-10"></div>
           <div className="room-suites text-center space-y-4 mb-5">
             <h1 className="text-[50px]">Rooms & Suites</h1>
             <p className="max-w-lg mx-auto text-[20px]">

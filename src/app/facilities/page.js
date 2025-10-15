@@ -2,7 +2,7 @@ import React from "react";
 import NavAndFooterWrap from "@/components/wrapper/Index";
 import Slider from "@/components/content/backgroundSlider";
 import { GlobalContextProvider } from "@/context/context";
-import { facilitiesData } from "@/lib/image";
+import { facilitiesData } from "@/lib/data";
 import FacilitiesShowcase from "./component/ServiceShowcase";
 import BreadCrumbs from "@/components/content/breadcrumbs";
 

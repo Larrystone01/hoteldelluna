@@ -1,53 +1,12 @@
 "use client";
 import Link from "next/link";
+import Logo from "../logo";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { X, Menu } from "lucide-react";
+import { navItems } from "@/lib/data";
 
-const navItems = [
-  {
-    id: "home",
-    label: "HOME",
-    href: "/",
-  },
-  {
-    id: "about",
-    label: "ABOUT US",
-    href: "/about",
-  },
-  {
-    id: "services",
-    label: "SERVICES",
-    href: "/services",
-  },
-  {
-    id: "rooms",
-    label: "ROOMS",
-    href: "/rooms",
-  },
-  {
-    id: "facilities",
-    label: "FACILITIES",
-    href: "/facilities",
-  },
-  {
-    id: "booking",
-    label: "BOOK US",
-    href: "/booking",
-  },
-  {
-    id: "contact",
-    label: "CONTACT",
-    href: "/contact",
-  },
-  {
-    id: "blog",
-    label: "BLOGS",
-    href: "/blogs",
-  },
-];
-
-export default function navbar() {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathName = usePathname();
@@ -76,8 +35,8 @@ export default function navbar() {
           <nav className="flex justify-between items-center">
             <div className="logo w-20">
               {/* <img src="/images/logo.jpeg" alt="hotel's logo" /> */}
-              <Link className="text-4xl font-bold text-white" href="/">
-                HDL
+              <Link className="font-bold text-white" href="/">
+                <Logo />
               </Link>
             </div>
             {/* Nav Dropdown */}

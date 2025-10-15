@@ -1,4 +1,4 @@
-import { roomData } from "@/lib/image";
+import { roomData } from "@/lib/data";
 
 export default async function Room({ params }) {
   const { roomName } = await params;

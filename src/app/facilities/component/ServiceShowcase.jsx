@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Button from "@/components/Button";
-import { facilitiesData } from "@/lib/image";
+import { facilitiesData } from "@/lib/data";
 
 export default function FacilitiesShowcase({
   facilityData,

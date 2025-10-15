@@ -3,7 +3,7 @@ import Slider from "@/components/content/backgroundSlider";
 import Button from "@/components/Button";
 import SubHero from "@/components/content/subHero";
 import { GlobalContextProvider } from "@/context/context";
-import { roomData } from "@/lib/image";
+import { roomData } from "@/lib/data";
 import HeroRoomShowCase from "@/components/content/roomSection";
 import FacilitiesShowcase from "./facilities/component/ServiceShowcase";
 

@@ -1,5 +1,5 @@
 "use client";
-import { roomData } from "@/lib/image";
+import { roomData } from "@/lib/data";
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
