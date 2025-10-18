@@ -9,7 +9,7 @@ export default function BreadCrumbs() {
   return (
     <>
       <nav>
-        <ol className="flex text-[14px] text-yellow-300 my-5">
+        <ol className="flex text-[14px] text-purple-700 my-5">
           <li>
             <Link href="/">Home</Link>
           </li>

@@ -38,30 +38,30 @@ export default function RoomDisplay() {
           {currentRooms.map((room) => {
             return (
               <div
-                className="room flex flex-col md:flex-row gap-10 mb-5 bg-gray-200 w-full"
+                className="room flex flex-col lg:flex-row gap-10 mb-5 bg-gray-200 w-full h-full"
                 key={room.id}
               >
-                <div className="relative md:w-[500px] h-[400px] ">
+                <div className="relative w-full h-[400px] lg:w-1/2 lg:h-[400px]">
                   <Image
                     src={room.src}
                     fill
-                    className="w-full h-48 object-cover"
+                    className="w-full h-1/2 object-cover"
                     alt={room.name}
                   />
                 </div>
                 {/* Room Details */}
-                <div className="room-details flex flex-col space-y-5 justify-center px-5 md:px-0 md:w-1/3">
-                  <h1 className="text-[30px] font-bold uppercase">
+                <div className="room-details flex flex-col space-y-5 justify-center px-5 lg:w-1/2 w-full">
+                  <h1 className="text-[30px] font-bold uppercase dark:text-black">
                     {room.name}
                   </h1>
-                  <p>
+                  <p className="dark:text-black">
                     from{" "}
                     <span className="text-yellow-800 font-bold">
                       {room.price}
                     </span>{" "}
                     per night
                   </p>
-                  <div className="peaks grid grid-cols-2">
+                  <div className="peaks grid grid-cols-2 dark:text-black">
                     {room.peaks.map((peak, index) => {
                       return (
                         <div key={index} className="flex gap-3 mb-3">
@@ -71,7 +71,7 @@ export default function RoomDisplay() {
                       );
                     })}
                   </div>
-                  <div className="buttons flex space-x-1 mb-4 md:mb-0">
+                  <div className="buttons flex space-x-1 mb-4">
                     <Link
                       href={`rooms/${room.slug}`}
                       className="uppercase bg-gray-400 px-5 py-2 text-[12px] hover:bg-transparent border-1 border-gray-400"

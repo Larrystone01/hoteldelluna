@@ -1,3 +1,4 @@
+"use client";
 import NavAndFooterWrap from "@/components/wrapper/Index";
 import Slider from "@/components/content/backgroundSlider";
 import Button from "@/components/Button";
@@ -6,6 +7,13 @@ import { GlobalContextProvider } from "@/context/context";
 import { roomData } from "@/lib/data";
 import HeroRoomShowCase from "@/components/content/roomSection";
 import FacilitiesShowcase from "./facilities/component/ServiceShowcase";
+import { Cinzel } from "next/font/google";
+import { Typewriter } from "react-simple-typewriter";
+
+const playfair = Cinzel({
+  subsets: ["latin"],
+  weight: ["500"],
+});
 
 export default function Home() {
   return (
@@ -16,7 +24,19 @@ export default function Home() {
             <section className="text-white">
               <div className="hero-container flex justify-center items-center h-screen">
                 <div className="hero text-center">
-                  <p>Welcome To Hotel Del Luna</p>
+                  <h1
+                    className={`hero-text text-[25px] ${playfair.className} text-[]`}
+                  >
+                    <Typewriter
+                      words={["Welcome To Hotel Del Luna"]}
+                      loop={true}
+                      cursor
+                      cursorStyle="|"
+                      typeSpeed={70}
+                      deleteSpeed={50}
+                      delaySpeed={1500}
+                    />
+                  </h1>
                   <h1 className="md:text-[60px] text-[30px]">
                     Explore More. Stay Better{" "}
                     <span className="block">
