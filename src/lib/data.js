@@ -34,12 +34,14 @@ export const roomData = [
     price: "#30,000",
     noOfOccupant: 1,
     roomCategory: "deluxe haven",
+    description:
+      "A cozy and elegant space designed for solo comfort. The Deluxe Haven features a plush queen bed, smart entertainment, and essential amenities — perfect for guests who value simplicity and calm.",
     peaks: [
-      { name: "Queen bed", icon: <BedSingle /> },
-      { name: "Smart TV", icon: <Tv /> },
-      { name: "Free Wi-Fi", icon: <Wifi /> },
-      { name: "Air condition", icon: <AirVent /> },
-      { name: "Walk-in shower", icon: <ShowerHead /> },
+      { name: "Queen bed", icon: "BedSingle" },
+      { name: "Smart TV", icon: "Tv" },
+      { name: "Free Wi-Fi", icon: "Wifi" },
+      { name: "Air condition", icon: "AirVent" },
+      { name: "Walk-in shower", icon: "ShowerHead" },
     ],
   },
   {
@@ -50,12 +52,14 @@ export const roomData = [
     price: "#30,000",
     noOfOccupant: 1,
     roomCategory: "deluxe haven",
+    description:
+      "An upgraded version of the Deluxe Haven, offering a brighter layout and refined décor. With enhanced comfort and modern styling, it’s an inviting retreat for guests who enjoy extra elegance in a compact space.",
     peaks: [
-      { name: "Queen bed", icon: <BedSingle /> },
-      { name: "Smart TV", icon: <Tv /> },
-      { name: "Free Wi-Fi", icon: <Wifi /> },
-      { name: "Air conditioning", icon: <AirVent /> },
-      { name: "Walk-in shower", icon: <ShowerHead /> },
+      { name: "Queen bed", icon: "BedSingle" },
+      { name: "Smart TV", icon: "Tv" },
+      { name: "Free Wi-Fi", icon: "Wifi" },
+      { name: "Air conditioning", icon: "AirVent" },
+      { name: "Walk-in shower", icon: "ShowerHead" },
     ],
   },
   {
@@ -66,12 +70,14 @@ export const roomData = [
     price: "#50,000",
     noOfOccupant: 1,
     roomCategory: "signature stay",
+    description:
+      "Blending functionality and warmth, this Signature Stay offers a king-sized bed, a soft city glow view, and workspace essentials — a favorite for travelers seeking balanced comfort and charm.",
     peaks: [
-      { name: "King bed", icon: <BedDouble /> },
-      { name: "City view", icon: <Building /> },
-      { name: "Mini fridge", icon: <Refrigerator /> },
-      { name: "Work desk", icon: <ClipboardType /> },
-      { name: "Room service", icon: <ConciergeBell /> },
+      { name: "King bed", icon: "BedDouble" },
+      { name: "City view", icon: "Building" },
+      { name: "Mini fridge", icon: "Refrigerator" },
+      { name: "Work desk", icon: "ClipboardType" },
+      { name: "Room service", icon: "ConciergeBell" },
     ],
   },
   {
@@ -82,12 +88,14 @@ export const roomData = [
     price: "#50,000",
     noOfOccupant: 1,
     roomCategory: "signature stay",
+    description:
+      "A refined version of the Signature Stay with richer tones and elevated finishes. Ideal for business travelers or leisure guests who appreciate extra sophistication and a premium city view.",
     peaks: [
-      { name: "King bed", icon: <BedDouble /> },
-      { name: "City view", icon: <Building /> },
-      { name: "Mini fridge", icon: <Refrigerator /> },
-      { name: "Work desk", icon: <ClipboardType /> },
-      { name: "Room service", icon: <ConciergeBell /> },
+      { name: "King bed", icon: "BedDouble" },
+      { name: "City view", icon: "Building" },
+      { name: "Mini fridge", icon: "Refrigerator" },
+      { name: "Work desk", icon: "ClipboardType" },
+      { name: "Room service", icon: "ConciergeBell" },
     ],
   },
   {
@@ -98,12 +106,14 @@ export const roomData = [
     price: "#60,000",
     noOfOccupant: 2,
     roomCategory: "garden retreat",
+    description:
+      "A peaceful hideaway surrounded by nature’s calm. The Garden Retreat includes a private balcony, a soothing bath, and warm lighting — a perfect escape for couples seeking serenity.",
     peaks: [
-      { name: "Garden view", icon: <Flower /> },
-      { name: "Private balcony", icon: <Coffee /> },
-      { name: "Luxury bath", icon: <Bath /> },
-      { name: "Tea corner", icon: <Coffee /> },
-      { name: "Soft lighting", icon: <Lamp /> },
+      { name: "Garden view", icon: "Flower" },
+      { name: "Private balcony", icon: "Coffee" },
+      { name: "Luxury bath", icon: "Bath" },
+      { name: "Tea corner", icon: "Coffee" },
+      { name: "Soft lighting", icon: "Lamp" },
     ],
   },
   {
@@ -114,12 +124,14 @@ export const roomData = [
     price: "#60,000",
     noOfOccupant: 2,
     roomCategory: "garden retreat",
+    description:
+      "An enhanced Garden Retreat offering a more spacious balcony and modern touches. It’s ideal for guests who love lush surroundings with a touch of luxury and comfort.",
     peaks: [
-      { name: "Garden view", icon: <Flower /> },
-      { name: "Private balcony", icon: <Coffee /> },
-      { name: "Luxury bath", icon: <Bath /> },
-      { name: "Tea corner", icon: <Coffee /> },
-      { name: "Soft lighting", icon: <Lamp /> },
+      { name: "Garden view", icon: "Flower" },
+      { name: "Private balcony", icon: "Coffee" },
+      { name: "Luxury bath", icon: "Bath" },
+      { name: "Tea corner", icon: "Coffee" },
+      { name: "Soft lighting", icon: "Lamp" },
     ],
   },
   {
@@ -130,12 +142,14 @@ export const roomData = [
     price: "#90,000",
     noOfOccupant: 2,
     roomCategory: "skyline deluxe",
+    description:
+      "Designed for elevated comfort, the Skyline Deluxe offers mesmerizing skyline views, an executive desk, and a relaxing rain shower — perfect for travelers who enjoy modern sophistication.",
     peaks: [
-      { name: "Skyline view", icon: <Mountain /> },
-      { name: "Rain shower", icon: <CloudRain /> },
-      { name: "Mini bar", icon: <GlassWater /> },
-      { name: "Executive desk", icon: <Briefcase /> },
-      { name: "Evening turndown", icon: <Moon /> },
+      { name: "Skyline view", icon: "Mountain" },
+      { name: "Rain shower", icon: "CloudRain" },
+      { name: "Mini bar", icon: "GlassWater" },
+      { name: "Executive desk", icon: "Briefcase" },
+      { name: "Evening turndown", icon: "Moon" },
     ],
   },
   {
@@ -146,12 +160,14 @@ export const roomData = [
     price: "#90,000",
     noOfOccupant: 2,
     roomCategory: "skyline deluxe",
+    description:
+      "The premium Skyline Deluxe offers wider windows, softer lighting, and a more contemporary feel — a luxury haven for guests who love stunning views and refined details.",
     peaks: [
-      { name: "Skyline view", icon: <Mountain /> },
-      { name: "Rain shower", icon: <CloudRain /> },
-      { name: "Mini bar", icon: <GlassWater /> },
-      { name: "Executive desk", icon: <Briefcase /> },
-      { name: "Evening turndown", icon: <Moon /> },
+      { name: "Skyline view", icon: "Mountain" },
+      { name: "Rain shower", icon: "CloudRain" },
+      { name: "Mini bar", icon: "GlassWater" },
+      { name: "Executive desk", icon: "Briefcase" },
+      { name: "Evening turndown", icon: "Moon" },
     ],
   },
   {
@@ -162,13 +178,15 @@ export const roomData = [
     price: "#120,000",
     noOfOccupant: 2,
     roomCategory: "luxe comfort room",
+    description:
+      "The Luxe Comfort Room combines elegance and privacy. Featuring a king bed, lounge area, and soundproof walls, it’s built for guests who desire serenity and premium living.",
     peaks: [
-      { name: "King bed", icon: <BedDouble /> },
-      { name: "Spacious lounge", icon: <Armchair /> },
-      { name: "Rooftop access", icon: <Key /> },
-      { name: "In-room dining", icon: <Utensils /> },
-      { name: "Soundproof walls", icon: <VolumeX /> },
-      { name: "Luxury bathrobe", icon: <Shirt /> },
+      { name: "King bed", icon: "BedDouble" },
+      { name: "Spacious lounge", icon: "Armchair" },
+      { name: "Rooftop access", icon: "Key" },
+      { name: "In-room dining", icon: "Utensils" },
+      { name: "Soundproof walls", icon: "VolumeX" },
+      { name: "Luxury bathrobe", icon: "Shirt" },
     ],
   },
   {
@@ -179,13 +197,15 @@ export const roomData = [
     price: "#120,000",
     noOfOccupant: 2,
     roomCategory: "luxe comfort room",
+    description:
+      "The exclusive Luxe Comfort upgrade adds refined interiors, a more spacious lounge, and curated décor. It’s the ultimate expression of quiet luxury and relaxation.",
     peaks: [
-      { name: "King bed", icon: <BedDouble /> },
-      { name: "Spacious lounge", icon: <Armchair /> },
-      { name: "Rooftop access", icon: <Key /> },
-      { name: "In-room dining", icon: <Utensils /> },
-      { name: "Soundproof walls", icon: <VolumeX /> },
-      { name: "Luxury bathrobe", icon: <Shirt /> },
+      { name: "King bed", icon: "BedDouble" },
+      { name: "Spacious lounge", icon: "Armchair" },
+      { name: "Rooftop access", icon: "Key" },
+      { name: "In-room dining", icon: "Utensils" },
+      { name: "Soundproof walls", icon: "VolumeX" },
+      { name: "Luxury bathrobe", icon: "Shirt" },
     ],
   },
 ];

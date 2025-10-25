@@ -1,4 +1,5 @@
 "use client";
+import * as Icons from "lucide-react";
 import { roomData } from "@/lib/data";
 import Image from "next/image";
 import { useState } from "react";
@@ -63,9 +64,12 @@ export default function RoomDisplay() {
                   </p>
                   <div className="peaks grid grid-cols-2 dark:text-black">
                     {room.peaks.map((peak, index) => {
+                      const Icon = Icons[peak.icon];
                       return (
                         <div key={index} className="flex gap-3 mb-3">
-                          <span>{peak.icon}</span>
+                          <span className="">
+                            <Icon size={20} />
+                          </span>
                           <span>{peak.name}</span>
                         </div>
                       );

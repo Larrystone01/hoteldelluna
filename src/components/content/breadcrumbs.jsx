@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { ChevronRight } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 import Link from "next/link";
 
 export default function BreadCrumbs() {
@@ -9,7 +9,7 @@ export default function BreadCrumbs() {
   return (
     <>
       <nav>
-        <ol className="flex text-[14px] text-purple-700 my-5">
+        <ol className="flex text-[20px] text-purple-700 my-5">
           <li>
             <Link href="/">Home</Link>
           </li>
@@ -19,7 +19,7 @@ export default function BreadCrumbs() {
             return (
               <li className="capitalize flex" key={index}>
                 <span className="flex justify-center items-center">
-                  <ChevronRight size={14} />
+                  <ChevronsRight size={20} />
                 </span>
                 {isLast ? (
                   <span>{path.replace("-", " ")}</span>

@@ -31,7 +31,7 @@ export default function Navbar() {
           isScrolled ? "bg-black/90" : "bg-transparent"
         } fixed top-0 z-40 w-full overflow-hidden`}
       >
-        <div className="container px-6 py-4">
+        <div className="container px-6 py-4 mx-auto">
           <nav className="flex justify-between items-center">
             <div className="logo w-20">
               {/* <img src="/images/logo.jpeg" alt="hotel's logo" /> */}

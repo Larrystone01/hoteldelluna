@@ -11,6 +11,7 @@ export default function SubHero() {
               src="/images/hotel-view-bg.jpg"
               alt="hotel front-view"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
               loading="lazy"
               className="h-full"
             />
@@ -35,6 +36,7 @@ export default function SubHero() {
               src="/images/hotel-view-bg2.jpg"
               alt="hotel front-view"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
               className="object-cover"
             />
           </div>
