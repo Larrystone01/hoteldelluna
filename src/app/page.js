@@ -1,10 +1,11 @@
 "use client";
+import { useEffect, useState } from "react";
 import NavAndFooterWrap from "@/components/wrapper/Index";
 import Slider from "@/components/content/backgroundSlider";
 import Button from "@/components/Button";
 import SubHero from "@/components/content/subHero";
 import { GlobalContextProvider } from "@/context/context";
-import { roomData } from "@/lib/data";
+import { supabase } from "@/lib/supabaseClient";
 import HeroRoomShowCase from "@/components/content/roomSection";
 import FacilitiesShowcase from "./facilities/component/ServiceShowcase";
 import { Cinzel } from "next/font/google";
@@ -16,8 +17,17 @@ const playfair = Cinzel({
 });
 
 export default function Home() {
+  const [roomsData, setRoomsData] = useState([]);
+  useEffect(() => {
+    const getRooms = async () => {
+      const { data, error } = await supabase.from("rooms").select("*");
+      if (error) console.error("Error fetching Rooms:", error.message);
+      else setRoomsData(data);
+    };
+    getRooms();
+  }, []);
   return (
-    <GlobalContextProvider imageData={roomData}>
+    <GlobalContextProvider imageData={roomsData}>
       <Slider interval={4000}>
         <NavAndFooterWrap>
           <div className="container px-6 mx-auto">

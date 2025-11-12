@@ -13,8 +13,8 @@ export default function HeroRoomShowCase() {
     const categories = {};
 
     imageData.forEach((image) => {
-      if (!categories[image.roomCategory]) {
-        categories[image.roomCategory] = image;
+      if (!categories[image.room_category]) {
+        categories[image.room_category] = image;
       }
     });
     return Object.values(categories);
@@ -102,7 +102,7 @@ export default function HeroRoomShowCase() {
                         {/* Room Image */}
                         <div className="relative h-64 overflow-hidden">
                           <img
-                            src={room.src}
+                            src={room.image_url}
                             alt={room.name}
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                           />

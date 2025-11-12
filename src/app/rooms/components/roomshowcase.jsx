@@ -1,16 +1,43 @@
 "use client";
 import * as Icons from "lucide-react";
-import { roomData } from "@/lib/data";
+import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import CheckAvailability from "@/components/checkAvailability";
+import { useRoom } from "@/context/roomContext";
 
 export default function RoomDisplay() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { setSelectedRoom } = useRoom();
+  const router = useRouter();
+  useEffect(() => {
+    async function fetchRooms() {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase.from("rooms").select("*");
+        if (error) {
+          console.error("Error fetching Rooms:", error.message);
+          setError("Error Loading Rooms Kindly Refresh the page");
+        }
+        setRooms(data || []);
+      } catch (err) {
+        console.error("Error fetching rooms:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRooms();
+  }, []);
+
   const roomsPerPage = 4;
-  const totalPages = Math.ceil(roomData.length / roomsPerPage);
+  const totalPages = Math.ceil(rooms.length / roomsPerPage);
   const startIndex = (currentPage - 1) * roomsPerPage;
-  const currentRooms = roomData.slice(startIndex, startIndex + roomsPerPage);
+  const currentRooms = rooms.slice(startIndex, startIndex + roomsPerPage);
   const handleSwitch = (page) => {
     setCurrentPage(page);
   };
@@ -32,10 +59,27 @@ export default function RoomDisplay() {
     });
   };
 
+  const handleBook = (room) => {
+    setSelectedRoom(room);
+    router.push(`rooms/${room.slug}/booking`);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+        <p className="mt-4 text-gray-600 text-lg font-medium">
+          Loading rooms...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="my-6 md:grid md:grid-cols-4 gap-6">
         <div className="room-container col-span-3 items-start flex flex-col gap-7">
+          {error && <div></div>}
           {currentRooms.map((room) => {
             return (
               <div
@@ -44,7 +88,7 @@ export default function RoomDisplay() {
               >
                 <div className="relative w-full h-[400px] lg:w-1/2 lg:h-[400px]">
                   <Image
-                    src={room.src}
+                    src={room.image_url}
                     fill
                     className="w-full h-1/2 object-cover"
                     alt={room.name}
@@ -83,13 +127,13 @@ export default function RoomDisplay() {
                       {" "}
                       Details
                     </Link>
-                    <Link
-                      href={`rooms/${room.slug}`}
+                    <button
                       className="uppercase bg-yellow-400 px-5 py-2 text-[12px] hover:bg-transparent border-1 border-yellow-400"
+                      onClick={() => handleBook(room)}
                     >
                       {" "}
                       Book now
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -122,9 +166,7 @@ export default function RoomDisplay() {
             </button>
           </div>
         </div>
-        <aside className="col-span-1 bg-black -z-20 h-fit">
-          <h1 className="text-white">Check Availability</h1>
-        </aside>
+        <CheckAvailability />
       </section>
     </>
   );
