@@ -78,6 +78,9 @@ export default function CheckAvailability({ room_id, initialDates }) {
               />
             </div>
           </form>
+          {result &&(
+            <p></p>
+          )}
         </div>
         <button
           form="availability-form"

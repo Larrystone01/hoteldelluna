@@ -11,9 +11,6 @@ export async function POST(request) {
       );
     }
 
-    const checkInDate = new Date(check_in);
-    const checkOutDate = new Date(check_out);
-
     const query = supabaseServer.from("booking").select("*");
 
     if (room_id) {
@@ -21,13 +18,14 @@ export async function POST(request) {
     }
 
     query.gte("check_out", check_in).lte("check_in", check_out);
+    const { data: existingBookings, error } = await query;
 
-    const { data: existingBookings, error } = await supabaseServer
-      .from("booking")
-      .select("*")
-      .eq("id", room_id)
-      .gte("check_out", check_in)
-      .lte("check_in", check_out);
+    // const { data: existingBookings, error } = await supabaseServer
+    //   .from("booking")
+    //   .select("*")
+    //   .eq("room_id", room_id)
+    //   .gte("check_out", check_in)
+    //   .lte("check_in", check_out);
     // .or(`and(check_in.lte.${check_out},check_out.gte.${check_in})`);
     if (error) throw error;
 
