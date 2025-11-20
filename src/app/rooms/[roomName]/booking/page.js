@@ -18,7 +18,7 @@ export default function BookingPage() {
     <>
       <Slider images={[room.image_url]}>
         <NavAndFooterWrap>
-          <div className="h-[70vh]">Welcome to {room.name}</div>
+          <div className="h-[70vh]">Welcome to {room.name} in HDL</div>
         </NavAndFooterWrap>
       </Slider>
     </>
