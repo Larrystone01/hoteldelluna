@@ -24,8 +24,8 @@ export default function DateRangePicker({ dates, setDates, error }) {
               className="w-full justify-start text-left text-black font-normal"
             >
               <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-              {dates.check_in ? (
-                format(dates.check_in, "PPPP")
+              {dates?.check_in ? (
+                format(dates.check_in, "EEE, dd MMM yyyy")
               ) : (
                 <span>Select date</span>
               )}
@@ -34,13 +34,13 @@ export default function DateRangePicker({ dates, setDates, error }) {
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
-              selected={dates.check_in}
+              selected={null || dates?.check_in}
               onSelect={(date) => {
                 // Reset check-out if it’s before the new check-in
-                if (dates.check_out && date && date > dates.check_out) {
+                if (dates?.check_out && date && date > dates?.check_out) {
                   setDates({ check_in: date, check_out: null });
                 } else {
-                  setDates({ ...dates, check_in: date });
+                  setDates((dates) => ({ ...dates, check_in: date }));
                 }
               }}
               initialFocus
@@ -62,11 +62,11 @@ export default function DateRangePicker({ dates, setDates, error }) {
             <Button
               variant="outline"
               className="w-full justify-start text-left text-black font-normal"
-              disabled={!dates.check_in}
+              disabled={!dates?.check_in}
             >
               <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-              {dates.check_out ? (
-                format(dates.check_out, "PPPP")
+              {dates?.check_out ? (
+                format(dates.check_out, "EEE, dd MMM yyyy")
               ) : (
                 <span>Select date</span>
               )}
@@ -75,7 +75,7 @@ export default function DateRangePicker({ dates, setDates, error }) {
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
-              selected={dates.check_out}
+              selected={dates?.check_out}
               onSelect={(date) => setDates({ ...dates, check_out: date })}
               disabled={(date) => !dates.check_in || date <= dates.check_in}
               initialFocus

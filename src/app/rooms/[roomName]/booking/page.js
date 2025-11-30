@@ -1,10 +1,105 @@
 "use client";
+import { useState, useEffect } from "react";
 import Slider from "@/components/content/backgroundSlider";
 import NavAndFooterWrap from "@/components/wrapper/Index";
 import { useRoom } from "@/context/roomContext";
+import { useDates } from "@/context/dateContext";
+import DateRangePicker from "@/components/content/DateRangePicker";
 
 export default function BookingPage() {
   const { selectedRoom: room } = useRoom();
+  const { dates, setDates } = useDates();
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    checkIn: "",
+    checkOut: "",
+    country: "",
+    adults: "",
+    children: "",
+    specialRequests: "",
+  });
+
+  const countries = [
+    "Nigeria",
+    "United States",
+    "United Kingdom",
+    "Canada",
+    "Ghana",
+    "South Africa",
+    "Kenya",
+    "Australia",
+    "Germany",
+    "France",
+  ];
+
+  const handleSubmit = () => {
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.country
+    ) {
+      alert("Please fill in all required fields");
+      return;
+    }
+    alert("Booking confirmed! Check your email for confirmation details.");
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const formattedDate = (value) => {
+    if (!value) return;
+    return new Date(value).toDateString();
+  };
+  // useEffect(() => {
+  //   if (room?.checkInDate && room?.checkOutDate) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       checkIn: formattedDate(room.checkInDate),
+  //       checkOut: formattedDate(room.checkOutDate),
+  //     }));
+  //   }
+  // }, [room]);
+
+  // useEffect(() => {
+  //   if (dates?.check_in && dates?.check_out && !room?.checkInDate) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       checkIn: dates.check_in,
+  //       checkOut: dates.check_out,
+  //     }));
+  //   }
+  // }, [dates, room]);
+
+  useEffect(() => {
+    // If global room state has dates, use them
+    if (room?.checkInDate || room?.checkOutDate) {
+      setFormData((prev) => ({
+        ...prev,
+        checkIn: formattedDate(room?.checkInDate),
+        checkOut: formattedDate(room?.checkOutDate),
+      }));
+      return; // stop here, room takes priority
+    }
+
+    // Otherwise, use local selected dates
+    if (dates?.check_in || dates?.check_out) {
+      setFormData((prev) => ({
+        ...prev,
+        checkIn: dates?.check_in ? formattedDate(dates.check_in) : "",
+        checkOut: dates?.check_out ? formattedDate(dates.check_out) : "",
+      }));
+    }
+  }, [room, dates]);
   if (!room) {
     return (
       <div className="p-6 text-center">
@@ -18,7 +113,274 @@ export default function BookingPage() {
     <>
       <Slider images={[room.image_url]}>
         <NavAndFooterWrap>
-          <div className="h-[70vh]">Welcome to {room.name} in HDL</div>
+          <div className="h-[100vh] text-white text-[40px] flex justify-center items-center">
+            Booking confirmation
+          </div>
+          <div className=" px-6 bg-gradient-to-br from-blue-50 to-indigo-100">
+            <div className="container booking-form">
+              <div className="min-h-screen w-full  p-6 flex items-center justify-center">
+                <div className="max-w-5xl w-full bg-white shadow-2xl overflow-hidden">
+                  <div className="bg-gradient-to-r from-blue-950 to-blue-700 p-6">
+                    <h1 className="text-3xl font-bold text-white">
+                      Complete Your Booking
+                    </h1>
+                    <p className="text-indigo-100 mt-1">
+                      Just a few details to confirm your stay
+                    </p>
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-6 p-8">
+                    {/* Booking Form - Left Side */}
+                    <div className="md:col-span-2">
+                      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                        Booking Form
+                      </h2>
+
+                      <div className="space-y-5">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
+                            placeholder="Enter your full name"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
+                            placeholder="your.email@example.com"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Phone
+                          </label>
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
+                            placeholder="+234 xxx xxx xxxx"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Country
+                          </label>
+                          <select
+                            name="country"
+                            value={formData.country}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors bg-white"
+                            required
+                          >
+                            <option value="">Select your country</option>
+                            {countries.map((country) => (
+                              <option key={country} value={country}>
+                                {country}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                              Adults
+                            </label>
+                            <input
+                              type="number"
+                              name="adults"
+                              value={formData.adults}
+                              onChange={handleChange}
+                              min="1"
+                              max="10"
+                              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                              Children
+                            </label>
+                            <input
+                              type="number"
+                              name="children"
+                              value={formData.children}
+                              onChange={handleChange}
+                              min="0"
+                              max="10"
+                              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Special Requests
+                          </label>
+                          <textarea
+                            name="specialRequests"
+                            value={formData.specialRequests}
+                            onChange={handleChange}
+                            rows="4"
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none"
+                            placeholder="Any special requirements or requests..."
+                          ></textarea>
+                        </div>
+
+                        <button
+                          onClick={handleSubmit}
+                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all shadow-lg"
+                        >
+                          CONFIRM BOOKING
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Summary - Right Side */}
+                    <div className="md:col-span-1">
+                      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                        Summary
+                      </h2>
+
+                      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border-2 border-indigo-100 space-y-4">
+                        <div className="pb-4 border-b border-indigo-200">
+                          <p className="text-sm text-gray-600 mb-1">
+                            Room Type
+                          </p>
+                          <p className="text-xl font-bold text-indigo-900">
+                            {room.name}
+                          </p>
+                        </div>
+
+                        {isEditing ? (
+                          <div className="space-y-4">
+                            {/* Date picker */}
+                            <DateRangePicker
+                              dates={dates}
+                              setDates={setDates}
+                            />
+
+                            {/* Save / Cancel buttons */}
+                            <div className="grid grid-cols-2 gap-2 mt-2">
+                              <button
+                                className="bg-indigo-600 text-white px-4 py-2 rounded"
+                                onClick={() => {
+                                  if (dates.check_in && dates.check_out) {
+                                    setFormData((prev) => ({
+                                      ...prev,
+                                      checkIn: formattedDate(dates.check_in),
+                                      checkOut: formattedDate(dates.check_out),
+                                    }));
+                                    setIsEditing(false);
+                                  } else {
+                                    alert(
+                                      "Please select both check-in and check-out dates."
+                                    );
+                                  }
+                                }}
+                              >
+                                Save Dates
+                              </button>
+                              <button
+                                className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                                onClick={() => {
+                                  if (!dates.check_in || !dates.check_out) {
+                                    alert(
+                                      "Please select both check-in and check-out dates"
+                                    );
+                                  } else {
+                                    setIsEditing(false);
+                                  }
+                                }}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : formData.checkIn && formData.checkOut ? (
+                          <>
+                            {/* Check-in */}
+                            <div className="pb-4 border-b border-indigo-200">
+                              <p className="text-sm text-gray-600 mb-1">
+                                Check-in
+                              </p>
+                              <p className="text-lg font-semibold text-gray-800">
+                                {formData.checkIn}
+                              </p>
+                            </div>
+
+                            {/* Check-out */}
+                            <div className="pb-4 border-b border-indigo-200">
+                              <p className="text-sm text-gray-600 mb-1">
+                                Check-out
+                              </p>
+                              <p className="text-lg font-semibold text-gray-800">
+                                {formData.checkOut}
+                              </p>
+                            </div>
+                          </>
+                        ) : (
+                          <DateRangePicker dates={dates} setDates={setDates} />
+                        )}
+
+                        {/* Total Amount */}
+                        <div className="pt-2">
+                          <p className="text-sm text-gray-600 mb-1">
+                            Total Amount
+                          </p>
+                          <p className="text-3xl font-bold text-indigo-600">
+                            ₦140,000
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            2 nights stay
+                          </p>
+                        </div>
+
+                        {/* Edit Details button */}
+                        {!isEditing && !room.checkInDate && (
+                          <button
+                            className="w-full mt-6 bg-white text-indigo-600 font-semibold py-3 rounded-lg border-2 border-indigo-200 hover:bg-indigo-50 transition-colors"
+                            onClick={() => setIsEditing(true)}
+                          >
+                            Edit Details
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <p className="text-sm text-green-800">
+                          <span className="font-semibold">
+                            ✓ Free Cancellation
+                          </span>{" "}
+                          until 48 hours before check-in
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </NavAndFooterWrap>
       </Slider>
     </>

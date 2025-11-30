@@ -1,24 +1,47 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Asterisk } from "lucide-react";
 import DateRangePicker from "./content/DateRangePicker";
+import { useRoom } from "@/context/roomContext";
+import { useDates } from "@/context/dateContext";
 
-export default function CheckAvailability({ room_id, initialDates }) {
-  const [dates, setDates] = useState(
-    initialDates || { check_in: null, check_out: null }
-  );
+export default function CheckAvailability({
+  room_id,
+  initialDates,
+  showAvailabilityStatus = false,
+  navigateTo = null,
+}) {
+  // const [dates, setDates] = useState(
+  //   initialDates || { check_in: null, check_out: null }
+  // );
+  const { dates, setDates } = useDates();
   const [errors, setErrors] = useState({ check_in: "", check_out: "" });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const { setSelectedRoom, selectedRoom } = useRoom();
+  const router = useRouter();
+
+  const getLabel = () => {
+    if (!showAvailabilityStatus) return "Check Availability";
+    if (loading) return "Checking....";
+    if (result === true) return "Reserve Room";
+    if (result === false) return "Room Is not Available";
+    return "Check Availability";
+  };
 
   useEffect(() => {
-    if (room_id && dates.check_in && dates.check_out) {
-      handleCheck();
-    }
-  }, []);
+    console.log("RESULT STATE CHANGED:", result);
+  }, [result]);
 
-  async function handleCheck(e) {
-    e.preventDefault();
+  // useEffect(() => {
+  //   if (room_id && dates.check_in && dates.check_out) {
+  //     handleCheck();
+  //   }
+  // }, []);
+
+  async function handleCheck() {
+    // e.preventDefault();
     if (!dates.check_in || !dates.check_out) {
       alert("Please Select both the check-in and the check-out dates");
       let newErrors = { check_in: "", check_out: "" };
@@ -28,6 +51,9 @@ export default function CheckAvailability({ room_id, initialDates }) {
 
       if (newErrors.check_in || newErrors.check_out) {
         setErrors(newErrors);
+        setTimeout(() => {
+          setErrors({ check_in: "", check_out: "" });
+        }, 3000);
       }
       return;
     }
@@ -38,7 +64,7 @@ export default function CheckAvailability({ room_id, initialDates }) {
     try {
       setLoading(true);
       setResult(null);
-      const res = await fetch("api/check-availability", {
+      const res = await fetch("/api/check-availability", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -49,7 +75,15 @@ export default function CheckAvailability({ room_id, initialDates }) {
       });
       const data = await res.json();
       setErrors({ check_in: "", check_out: "" });
-      setResult(data);
+      setResult(data.available);
+      setSelectedRoom((prev) => ({
+        ...prev,
+        checkInDate: dates.check_in,
+        checkOutDate: dates.check_out,
+      }));
+      setDates({ check_in: dates.check_in, check_out: dates.check_out });
+      console.log(selectedRoom);
+      console.log("RESULT VALUE:", result);
     } catch (error) {
       console.error("Error Checking Availability:", error);
       setResult({ error: "An error occured, please try again" });
@@ -63,7 +97,7 @@ export default function CheckAvailability({ room_id, initialDates }) {
         <div className="px-4 pt-5">
           <form
             className="form-container"
-            onSubmit={handleCheck}
+            // onSubmit={handleCheck}
             id="availability-form"
           >
             <h1 className="text-center text-[25px]">Check Availability</h1>
@@ -78,16 +112,28 @@ export default function CheckAvailability({ room_id, initialDates }) {
               />
             </div>
           </form>
-          {result &&(
-            <p></p>
-          )}
+          {showAvailabilityStatus &&
+            result !== null &&
+            (result ? (
+              <p>This Room is available for Booking</p>
+            ) : (
+              <p>This Room is Fully Booked</p>
+            ))}
         </div>
         <button
           form="availability-form"
-          type="submit"
+          type="button"
+          onClick={() => {
+            if (result === true && navigateTo) {
+              router.push(navigateTo);
+            } else {
+              handleCheck();
+            }
+          }}
+          disabled={loading || result === false}
           className="cursor-pointer w-full uppercase bg-yellow-300 text-center hover:bg-amber-200 p-3 mt-4"
         >
-          check availability
+          {getLabel()}
         </button>
       </aside>
     </>

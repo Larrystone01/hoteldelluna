@@ -33,7 +33,7 @@ export default function RoomPage({ Room }) {
                 <BreadCrumbs />
               </div>
             </div>
-            <div className="grid grid-cols-3 py-16 gap-8 relative">
+            <div className="lg:grid grid-cols-3 py-16 gap-8 relative">
               <main className="room-details w-full col-span-2">
                 <div className="room-image w-full mx-auto h-[600px] relative cursor-pointer">
                   <Image
@@ -92,8 +92,11 @@ export default function RoomPage({ Room }) {
                   </section>
                 )}
               </main>
-              <div className="col-span-1">
-                <CheckAvailability />
+              <div className="col-span-1 mt-7 md:mt-0">
+                <CheckAvailability
+                  showAvailabilityStatus={true}
+                  navigateTo={`/rooms/${Room.slug}/booking`}
+                />
               </div>
             </div>
           </section>

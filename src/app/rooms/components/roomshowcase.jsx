@@ -4,7 +4,6 @@ import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import CheckAvailability from "@/components/checkAvailability";
 import { useRoom } from "@/context/roomContext";
 
@@ -13,7 +12,7 @@ export default function RoomDisplay() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { setSelectedRoom } = useRoom();
+  const { selectedRoom, setSelectedRoom } = useRoom();
   const router = useRouter();
   useEffect(() => {
     async function fetchRooms() {
@@ -61,7 +60,13 @@ export default function RoomDisplay() {
 
   const handleBook = (room) => {
     setSelectedRoom(room);
+    console.log(room);
     router.push(`rooms/${room.slug}/booking`);
+  };
+
+  const handleDetails = (room) => {
+    setSelectedRoom(room);
+    router.push(`rooms//${room.slug}`);
   };
 
   if (loading) {
@@ -77,7 +82,7 @@ export default function RoomDisplay() {
 
   return (
     <>
-      <section className="my-6 md:grid md:grid-cols-4 gap-6">
+      <section className="my-6 lg:grid lg:grid-cols-4 gap-6">
         <div className="room-container col-span-3 items-start flex flex-col gap-7">
           {error && <div></div>}
           {currentRooms.map((room) => {
@@ -120,15 +125,15 @@ export default function RoomDisplay() {
                     })}
                   </div>
                   <div className="buttons flex space-x-1 mb-4">
-                    <Link
-                      href={`rooms/${room.slug}`}
-                      className="uppercase bg-gray-400 px-5 py-2 text-[12px] hover:bg-transparent border-1 border-gray-400"
+                    <button
+                      onClick={() => handleDetails(room)}
+                      className="uppercase bg-gray-400 px-5 py-2 text-[12px] hover:bg-transparent border-1 border-gray-400 cursor-pointer"
                     >
                       {" "}
                       Details
-                    </Link>
+                    </button>
                     <button
-                      className="uppercase bg-yellow-400 px-5 py-2 text-[12px] hover:bg-transparent border-1 border-yellow-400"
+                      className="uppercase bg-yellow-400 px-5 py-2 text-[12px] hover:bg-transparent border-1 border-yellow-400 cursor-pointer"
                       onClick={() => handleBook(room)}
                     >
                       {" "}
@@ -166,7 +171,9 @@ export default function RoomDisplay() {
             </button>
           </div>
         </div>
-        <CheckAvailability />
+        <div className="aside lg:col-span-1">
+          <CheckAvailability />
+        </div>
       </section>
     </>
   );

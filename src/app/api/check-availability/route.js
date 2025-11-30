@@ -3,7 +3,7 @@ import { supabaseServer } from "@/lib/supabaseServer";
 
 export async function POST(request) {
   try {
-    const { check_in, check_out, room_id } = await request.json();
+    const { check_in, check_out, roomId } = await request.json();
     if (!check_in || !check_out) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -13,8 +13,8 @@ export async function POST(request) {
 
     const query = supabaseServer.from("booking").select("*");
 
-    if (room_id) {
-      query.eq("room_id", room_id);
+    if (roomId) {
+      query.eq("id", roomId);
     }
 
     query.gte("check_out", check_in).lte("check_in", check_out);
@@ -31,7 +31,7 @@ export async function POST(request) {
 
     const isAvailable = existingBookings.length === 0;
     return NextResponse.json({
-      room_id: room_id || null,
+      id: roomId || null,
       available: isAvailable,
       overlapping_bookings: existingBookings,
     });
