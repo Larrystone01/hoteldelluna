@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Slider from "@/components/content/backgroundSlider";
 import NavAndFooterWrap from "@/components/wrapper/Index";
+import { supabase } from "@/lib/supabaseClient";
 import { useRoom } from "@/context/roomContext";
 import { useDates } from "@/context/dateContext";
 import DateRangePicker from "@/components/content/DateRangePicker";
@@ -10,12 +11,14 @@ export default function BookingPage() {
   const { selectedRoom: room } = useRoom();
   const { dates, setDates } = useDates();
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
     checkIn: "",
     checkOut: "",
+    totalAmount: "",
     country: "",
     adults: "",
     children: "",
@@ -35,7 +38,7 @@ export default function BookingPage() {
     "France",
   ];
 
-  const handleSubmit = () => {
+  async function handleSubmit() {
     if (
       !formData.fullName ||
       !formData.email ||
@@ -45,8 +48,43 @@ export default function BookingPage() {
       alert("Please fill in all required fields");
       return;
     }
-    alert("Booking confirmed! Check your email for confirmation details.");
-  };
+
+    try {
+      setLoading(true);
+      const payload = {
+        room_name: room.name,
+        check_in: formData.checkIn,
+        check_out: formData.checkOut,
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        total_price: formData.totalAmount,
+      };
+
+      const { data, error } = await supabase
+        .from("booking")
+        .insert([payload])
+        .select();
+      console.log(error);
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        country: "",
+        checkIn: "",
+        checkOut: "",
+        children: "",
+        adults: "",
+        specialRequests: "",
+      });
+      setDates({ check_in: null, check_out: null });
+      setIsEditing(true);
+    } catch (error) {
+      console.error("Booking Failed", error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,25 +98,18 @@ export default function BookingPage() {
     if (!value) return;
     return new Date(value).toDateString();
   };
-  // useEffect(() => {
-  //   if (room?.checkInDate && room?.checkOutDate) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       checkIn: formattedDate(room.checkInDate),
-  //       checkOut: formattedDate(room.checkOutDate),
-  //     }));
-  //   }
-  // }, [room]);
 
-  // useEffect(() => {
-  //   if (dates?.check_in && dates?.check_out && !room?.checkInDate) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       checkIn: dates.check_in,
-  //       checkOut: dates.check_out,
-  //     }));
-  //   }
-  // }, [dates, room]);
+  const noDatesSelected = !dates?.check_in || !dates?.check_out;
+
+  const getNumberofNights = (checkIn, checkOut) => {
+    if (!checkIn || !checkOut) return 0;
+    const inDate = new Date(checkIn);
+    const outDate = new Date(checkOut);
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.ceil((outDate - inDate) / oneDay);
+  };
+
+  const night = getNumberofNights(formData.checkIn, formData.checkOut);
 
   useEffect(() => {
     // If global room state has dates, use them
@@ -100,6 +131,13 @@ export default function BookingPage() {
       }));
     }
   }, [room, dates]);
+
+  useEffect(() => {
+    if (room && night != null) {
+      setFormData((prev) => ({ ...prev, totalAmount: night * room.price }));
+    }
+  }, [room?.price, night]);
+
   if (!room) {
     return (
       <div className="p-6 text-center">
@@ -116,20 +154,20 @@ export default function BookingPage() {
           <div className="h-[100vh] text-white text-[40px] flex justify-center items-center">
             Booking confirmation
           </div>
-          <div className=" px-6 bg-gradient-to-br from-blue-50 to-indigo-100">
+          <div className="md:px-6 px-3 bg-gradient-to-br from-blue-50 to-indigo-100">
             <div className="container booking-form">
-              <div className="min-h-screen w-full  p-6 flex items-center justify-center">
+              <div className="min-h-screen w-full md:p-6 pt-6 flex items-center justify-center">
                 <div className="max-w-5xl w-full bg-white shadow-2xl overflow-hidden">
                   <div className="bg-gradient-to-r from-blue-950 to-blue-700 p-6">
-                    <h1 className="text-3xl font-bold text-white">
+                    <h1 className="text-3xl font-bold text-white text-center">
                       Complete Your Booking
                     </h1>
-                    <p className="text-indigo-100 mt-1">
+                    <p className="text-indigo-100 mt-1 text-center">
                       Just a few details to confirm your stay
                     </p>
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-6 p-8">
+                  <div className="grid md:grid-cols-3 gap-6 md:p-8 p-4">
                     {/* Booking Form - Left Side */}
                     <div className="md:col-span-2">
                       <h2 className="text-2xl font-bold text-gray-800 mb-6">
@@ -272,7 +310,7 @@ export default function BookingPage() {
                           </p>
                         </div>
 
-                        {isEditing ? (
+                        {isEditing || noDatesSelected ? (
                           <div className="space-y-4">
                             {/* Date picker */}
                             <DateRangePicker
@@ -349,15 +387,16 @@ export default function BookingPage() {
                             Total Amount
                           </p>
                           <p className="text-3xl font-bold text-indigo-600">
-                            ₦140,000
+                            ₦{formData.totalAmount || 0}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            2 nights stay
+                            {night}{" "}
+                            {night > 1 ? "nights of stay" : "night of stay"}
                           </p>
                         </div>
 
                         {/* Edit Details button */}
-                        {!isEditing && !room.checkInDate && (
+                        {!isEditing && (
                           <button
                             className="w-full mt-6 bg-white text-indigo-600 font-semibold py-3 rounded-lg border-2 border-indigo-200 hover:bg-indigo-50 transition-colors"
                             onClick={() => setIsEditing(true)}

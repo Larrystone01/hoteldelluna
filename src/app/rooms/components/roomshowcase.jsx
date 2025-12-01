@@ -107,7 +107,7 @@ export default function RoomDisplay() {
                   <p className="dark:text-black">
                     from{" "}
                     <span className="text-yellow-800 font-bold">
-                      {room.price}
+                      ₦{room.price}
                     </span>{" "}
                     per night
                   </p>

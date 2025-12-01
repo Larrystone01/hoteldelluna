@@ -34,6 +34,7 @@ export default function DateRangePicker({ dates, setDates, error }) {
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
+              disabled={{ before: new Date() }}
               selected={null || dates?.check_in}
               onSelect={(date) => {
                 // Reset check-out if it’s before the new check-in
