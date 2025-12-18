@@ -142,6 +142,7 @@ export default function BookingPage() {
     return new Date(value).toDateString();
   };
 
+  // No date selected
   const noDatesSelected = !dates?.check_in || !dates?.check_out;
 
   const getNumberofNights = (checkIn, checkOut) => {
