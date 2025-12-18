@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Slider from "@/components/content/backgroundSlider";
@@ -8,7 +9,7 @@ import { useRoom } from "@/context/roomContext";
 import { useDates } from "@/context/dateContext";
 import DateRangePicker from "@/components/content/DateRangePicker";
 
-export default function BookingPage() {
+function BookingContent() {
   const { selectedRoom, setSelectedRoom } = useRoom();
   const { dates, setDates } = useDates();
   const router = useRouter();
@@ -497,5 +498,13 @@ export default function BookingPage() {
         </NavAndFooterWrap>
       </Slider>
     </>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div>Loading.....</div>}>
+      <BookingContent />
+    </Suspense>
   );
 }
