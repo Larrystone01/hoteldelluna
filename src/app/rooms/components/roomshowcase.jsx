@@ -60,13 +60,12 @@ export default function RoomDisplay() {
 
   const handleBook = (room) => {
     setSelectedRoom(room);
-    console.log(room);
-    router.push(`rooms/${room.slug}/booking`);
+    router.push(`/booking?room=${room.slug}`);
   };
 
   const handleDetails = (room) => {
     setSelectedRoom(room);
-    router.push(`rooms//${room.slug}`);
+    router.push(`rooms/${room.slug}`);
   };
 
   if (loading) {
@@ -172,7 +171,7 @@ export default function RoomDisplay() {
           </div>
         </div>
         <div className="aside lg:col-span-1">
-          <CheckAvailability />
+          <CheckAvailability setRooms={setRooms} />
         </div>
       </section>
     </>

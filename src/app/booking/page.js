@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Slider from "@/components/content/backgroundSlider";
 import NavAndFooterWrap from "@/components/wrapper/Index";
 import { supabase } from "@/lib/supabaseClient";
@@ -8,17 +9,23 @@ import { useDates } from "@/context/dateContext";
 import DateRangePicker from "@/components/content/DateRangePicker";
 
 export default function BookingPage() {
-  const { selectedRoom: room } = useRoom();
+  const { selectedRoom, setSelectedRoom } = useRoom();
   const { dates, setDates } = useDates();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
+  const [rooms, setRooms] = useState([]);
+  const [room, setRoom] = useState(null);
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
+    roomType: "",
     checkIn: "",
     checkOut: "",
-    totalAmount: "",
+    totalAmount: 0,
     country: "",
     adults: "",
     children: "",
@@ -37,13 +44,47 @@ export default function BookingPage() {
     "Germany",
     "France",
   ];
+  const roomName = searchParams.get("room");
+
+  useEffect(() => {
+    async function fetchRooms() {
+      const { data, error } = await supabase.from("rooms").select("*");
+      if (error) {
+        console.error("Error Fetching Rooms:", error.message);
+      }
+      setRooms(data ?? []);
+    }
+    fetchRooms();
+  }, []);
+
+  useEffect(() => {
+    if (!rooms.length || !roomName) return;
+    const matchedRoom = rooms.find((r) => r.slug === roomName);
+    console.log(matchedRoom);
+    setRoom(matchedRoom);
+    if (matchedRoom) {
+      setSelectedRoom(matchedRoom);
+      setFormData((prev) => ({
+        ...prev,
+        roomType: matchedRoom.name,
+      }));
+    }
+  }, [rooms, roomName]);
+
+  const toDateOnly = (date) => {
+    const dateObj = new Date(date);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   async function handleSubmit() {
     if (
       !formData.fullName ||
       !formData.email ||
       !formData.phone ||
-      !formData.country
+      !formData.roomType
     ) {
       alert("Please fill in all required fields");
       return;
@@ -52,9 +93,9 @@ export default function BookingPage() {
     try {
       setLoading(true);
       const payload = {
-        room_name: room.name,
-        check_in: formData.checkIn,
-        check_out: formData.checkOut,
+        room_name: formData.roomType,
+        check_in: toDateOnly(dates.check_in),
+        check_out: toDateOnly(dates.check_out),
         full_name: formData.fullName,
         email: formData.email,
         phone: formData.phone,
@@ -65,7 +106,7 @@ export default function BookingPage() {
         .from("booking")
         .insert([payload])
         .select();
-      console.log(error);
+
       setFormData({
         fullName: "",
         email: "",
@@ -73,12 +114,14 @@ export default function BookingPage() {
         country: "",
         checkIn: "",
         checkOut: "",
+        totalAmount: 0,
         children: "",
         adults: "",
         specialRequests: "",
       });
       setDates({ check_in: null, check_out: null });
       setIsEditing(true);
+      // localStorage.removeItem("selectedRoom");
     } catch (error) {
       console.error("Booking Failed", error.message);
     } finally {
@@ -109,47 +152,54 @@ export default function BookingPage() {
     return Math.ceil((outDate - inDate) / oneDay);
   };
 
-  const night = getNumberofNights(formData.checkIn, formData.checkOut);
+  const night = getNumberofNights(dates.check_in, dates.check_out);
+
+  // useEffect(() => {
+  //   // If global room state has dates, use them
+  //   if (room?.checkInDate || room?.checkOutDate) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       checkIn: formattedDate(room?.checkInDate),
+  //       checkOut: formattedDate(room?.checkOutDate),
+  //     }));
+  //     return; // stop here, room takes priority
+  //   }
+
+  //   // Otherwise, use local selected dates
+  //   if (dates?.check_in || dates?.check_out) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       checkIn: dates?.check_in ? formattedDate(dates.check_in) : "",
+  //       checkOut: dates?.check_out ? formattedDate(dates.check_out) : "",
+  //     }));
+  //   }
+  // }, [room, dates]);
+
+  const backUpImage = "/images/booking-img.jpg";
+
+  const sliderImage = selectedRoom?.image_url || backUpImage;
 
   useEffect(() => {
-    // If global room state has dates, use them
-    if (room?.checkInDate || room?.checkOutDate) {
-      setFormData((prev) => ({
-        ...prev,
-        checkIn: formattedDate(room?.checkInDate),
-        checkOut: formattedDate(room?.checkOutDate),
-      }));
-      return; // stop here, room takes priority
-    }
+    if (!selectedRoom || night <= 0) return;
 
-    // Otherwise, use local selected dates
-    if (dates?.check_in || dates?.check_out) {
-      setFormData((prev) => ({
-        ...prev,
-        checkIn: dates?.check_in ? formattedDate(dates.check_in) : "",
-        checkOut: dates?.check_out ? formattedDate(dates.check_out) : "",
-      }));
-    }
-  }, [room, dates]);
+    setFormData((prev) => ({
+      ...prev,
+      totalAmount: night * selectedRoom.price,
+    }));
+  }, [selectedRoom, night]);
 
   useEffect(() => {
-    if (room && night != null) {
-      setFormData((prev) => ({ ...prev, totalAmount: night * room.price }));
+    if (selectedRoom?.slug && rooms.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        roomType: selectedRoom.slug,
+      }));
     }
-  }, [room?.price, night]);
+  }, [selectedRoom, rooms]);
 
-  if (!room) {
-    return (
-      <div className="p-6 text-center">
-        <p className="text-gray-500">
-          No room selected. Please go back to the rooms page.
-        </p>
-      </div>
-    );
-  }
   return (
     <>
-      <Slider images={[room.image_url]}>
+      <Slider images={[sliderImage]}>
         <NavAndFooterWrap>
           <div className="h-[100vh] text-white text-[40px] flex justify-center items-center">
             Booking confirmation
@@ -305,9 +355,31 @@ export default function BookingPage() {
                           <p className="text-sm text-gray-600 mb-1">
                             Room Type
                           </p>
-                          <p className="text-xl font-bold text-indigo-900">
-                            {room.name}
-                          </p>
+                          <select
+                            name="roomType"
+                            className="text-xl font-bold text-indigo-900"
+                            onChange={(e) => {
+                              const slug = e.target.value;
+                              setFormData((prev) => ({
+                                ...prev,
+                                roomType: slug,
+                              }));
+                              const foundRoom = rooms.find(
+                                (r) => r.slug === slug
+                              );
+                              setSelectedRoom(foundRoom || null);
+                            }}
+                            value={formData.roomType || ""}
+                          >
+                            <option value="">Select a room</option>
+                            {rooms.map((room) => {
+                              return (
+                                <option key={room.id} value={room.slug}>
+                                  {room.name}
+                                </option>
+                              );
+                            })}
+                          </select>
                         </div>
 
                         {isEditing || noDatesSelected ? (
@@ -316,6 +388,7 @@ export default function BookingPage() {
                             <DateRangePicker
                               dates={dates}
                               setDates={setDates}
+                              setResult={setResult}
                             />
 
                             {/* Save / Cancel buttons */}

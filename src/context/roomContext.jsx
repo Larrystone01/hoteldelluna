@@ -14,7 +14,7 @@ export function useRoom() {
 export function RoomProvider({ children }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   useEffect(() => {
-    const savedRoom = localStorage.getItem("selectedRoom");
+    const savedRoom = sessionStorage.getItem("selectedRoom");
     if (savedRoom) {
       setSelectedRoom(JSON.parse(savedRoom));
     }
@@ -22,13 +22,20 @@ export function RoomProvider({ children }) {
 
   useEffect(() => {
     if (selectedRoom) {
-      localStorage.setItem("selectedRoom", JSON.stringify(selectedRoom));
+      sessionStorage.setItem("selectedRoom", JSON.stringify(selectedRoom));
     } else {
-      localStorage.removeItem("selectedRoom");
+      sessionStorage.removeItem("selectedRoom");
     }
   }, [selectedRoom]);
+
+  const clearSelectedRoom = () => {
+    setSelectedRoom(null);
+    sessionStorage.removeItem("selectedRoom");
+  };
   return (
-    <RoomContext.Provider value={{ selectedRoom, setSelectedRoom }}>
+    <RoomContext.Provider
+      value={{ selectedRoom, setSelectedRoom, clearSelectedRoom }}
+    >
       {children}
     </RoomContext.Provider>
   );

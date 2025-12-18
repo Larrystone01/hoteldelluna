@@ -8,19 +8,21 @@ import { useDates } from "@/context/dateContext";
 
 export default function CheckAvailability({
   room_id,
-  initialDates,
+  room,
   showAvailabilityStatus = false,
   navigateTo = null,
+  setRooms,
 }) {
-  // const [dates, setDates] = useState(
-  //   initialDates || { check_in: null, check_out: null }
-  // );
   const { dates, setDates } = useDates();
   const [errors, setErrors] = useState({ check_in: "", check_out: "" });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const { setSelectedRoom, selectedRoom } = useRoom();
   const router = useRouter();
+
+  useEffect(() => {
+    setResult(null);
+  }, [dates.check_in, dates.check_out]);
 
   const getLabel = () => {
     if (!showAvailabilityStatus) return "Check Availability";
@@ -31,7 +33,10 @@ export default function CheckAvailability({
   };
 
   useEffect(() => {
-    console.log("RESULT STATE CHANGED:", result);
+    if (result === false) {
+      const timer = setTimeout(() => setResult(null), 5000);
+      return () => clearTimeout(timer);
+    }
   }, [result]);
 
   // useEffect(() => {
@@ -63,6 +68,7 @@ export default function CheckAvailability({
     }
     try {
       setLoading(true);
+      setErrors({ check_in: "", check_out: "" });
       setResult(null);
       const res = await fetch("/api/check-availability", {
         method: "POST",
@@ -70,26 +76,37 @@ export default function CheckAvailability({
         body: JSON.stringify({
           check_in: dates.check_in,
           check_out: dates.check_out,
-          ...(room_id && { roomId: room_id }),
+          ...(room_id && { room_name: room_id }),
         }),
       });
       const data = await res.json();
-      setErrors({ check_in: "", check_out: "" });
+
+      if (setRooms && Array.isArray(data.rooms)) {
+        setRooms(data.rooms);
+      }
       setResult(data.available);
-      setSelectedRoom((prev) => ({
-        ...prev,
-        checkInDate: dates.check_in,
-        checkOutDate: dates.check_out,
-      }));
+      console.log(data);
       setDates({ check_in: dates.check_in, check_out: dates.check_out });
-      console.log(selectedRoom);
-      console.log("RESULT VALUE:", result);
     } catch (error) {
       console.error("Error Checking Availability:", error);
       setResult({ error: "An error occured, please try again" });
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleButtonClick() {
+    if (result === true && navigateTo) {
+      setSelectedRoom((room) => ({
+        ...room,
+        checkInDate: dates.check_in,
+        checkOutDate: dates.check_out,
+      }));
+      router.push(navigateTo);
+      return;
+    }
+
+    handleCheck();
   }
   return (
     <>
@@ -109,6 +126,7 @@ export default function CheckAvailability({
                 dates={dates}
                 setDates={setDates}
                 error={errors}
+                setResult={setResult}
               />
             </div>
           </form>
@@ -117,19 +135,13 @@ export default function CheckAvailability({
             (result ? (
               <p>This Room is available for Booking</p>
             ) : (
-              <p>This Room is Fully Booked</p>
+              <p>This Room is Booked for the chosen date</p>
             ))}
         </div>
         <button
           form="availability-form"
           type="button"
-          onClick={() => {
-            if (result === true && navigateTo) {
-              router.push(navigateTo);
-            } else {
-              handleCheck();
-            }
-          }}
+          onClick={handleButtonClick}
           disabled={loading || result === false}
           className="cursor-pointer w-full uppercase bg-yellow-300 text-center hover:bg-amber-200 p-3 mt-4"
         >

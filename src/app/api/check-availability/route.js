@@ -3,40 +3,59 @@ import { supabaseServer } from "@/lib/supabaseServer";
 
 export async function POST(request) {
   try {
-    const { check_in, check_out, roomId } = await request.json();
+    const { check_in, check_out, room_id } = await request.json();
+
     if (!check_in || !check_out) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing check_in or check_out" },
         { status: 400 }
       );
     }
 
-    const query = supabaseServer.from("booking").select("*");
+    // 1️⃣ Find overlapping bookings
+    let bookingQuery = supabaseServer
+      .from("booking")
+      .select("room_name")
+      .lt("check_in", check_out)
+      .gt("check_out", check_in);
 
-    if (roomId) {
-      query.eq("id", roomId);
+    // If checking a specific room
+    if (room_id) {
+      bookingQuery = bookingQuery.eq("room_name", room_id);
     }
 
-    query.gte("check_out", check_in).lte("check_in", check_out);
-    const { data: existingBookings, error } = await query;
+    const { data: overlappingBookings, error: bookingError } =
+      await bookingQuery;
 
-    // const { data: existingBookings, error } = await supabaseServer
-    //   .from("booking")
-    //   .select("*")
-    //   .eq("room_id", room_id)
-    //   .gte("check_out", check_in)
-    //   .lte("check_in", check_out);
-    // .or(`and(check_in.lte.${check_out},check_out.gte.${check_in})`);
-    if (error) throw error;
+    if (bookingError) throw bookingError;
 
-    const isAvailable = existingBookings.length === 0;
+    // 2️⃣ CASE A: Specific room check
+    if (room_id) {
+      return NextResponse.json({
+        room_id,
+        available: overlappingBookings.length === 0,
+      });
+    }
+
+    // 3️⃣ CASE B: Get all available rooms
+    const bookedRooms = overlappingBookings.map((b) => b.room_name);
+
+    let roomsQuery = supabaseServer.from("rooms").select("*");
+
+    if (bookedRooms.length > 0) {
+      roomsQuery = roomsQuery.not("slug", "in", `(${bookedRooms.join(",")})`);
+    }
+
+    const { data: availableRooms, error: roomsError } = await roomsQuery;
+
+    if (roomsError) throw roomsError;
+
     return NextResponse.json({
-      id: roomId || null,
-      available: isAvailable,
-      overlapping_bookings: existingBookings,
+      available: true,
+      rooms: availableRooms,
     });
   } catch (error) {
-    console.error("Error checking availability:", error);
+    console.error("Availability check failed:", error);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }

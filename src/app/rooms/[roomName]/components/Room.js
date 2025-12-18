@@ -15,11 +15,11 @@ export default function RoomPage({ Room }) {
   };
   // console.log(room);
 
-  if (!Room) {
-    return (
-      <div className="text-center py-20 text-red-500">Room not found.</div>
-    );
-  }
+  // if (!Room) {
+  //   return (
+  //     <div className="text-center py-20 text-red-500">Room not found.</div>
+  //   );
+  // }
   return (
     <>
       <Slider images={[Room.image_url]}>
@@ -94,8 +94,10 @@ export default function RoomPage({ Room }) {
               </main>
               <div className="col-span-1 mt-7 md:mt-0">
                 <CheckAvailability
+                  room={Room}
+                  room_id={Room.name}
                   showAvailabilityStatus={true}
-                  navigateTo={`/rooms/${Room.slug}/booking`}
+                  navigateTo={`/booking?room=${Room.slug}`}
                 />
               </div>
             </div>

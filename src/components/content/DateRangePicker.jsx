@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-export default function DateRangePicker({ dates, setDates, error }) {
+export default function DateRangePicker({ dates, setDates, error, setResult }) {
   return (
     <div className="flex flex-col gap-6">
       {/* ✅ Check-in Date Picker */}
@@ -42,6 +42,9 @@ export default function DateRangePicker({ dates, setDates, error }) {
                   setDates({ check_in: date, check_out: null });
                 } else {
                   setDates((dates) => ({ ...dates, check_in: date }));
+                }
+                if (typeof setResult === "function") {
+                  setResult(null);
                 }
               }}
               initialFocus
@@ -77,7 +80,15 @@ export default function DateRangePicker({ dates, setDates, error }) {
             <Calendar
               mode="single"
               selected={dates?.check_out}
-              onSelect={(date) => setDates({ ...dates, check_out: date })}
+              onSelect={(date) => {
+                setDates({ ...dates, check_out: date });
+                // if(dates.check_out){
+                //   setResult((prev)=>({...prev,}))
+                // }
+                if (typeof setResult === "function") {
+                  setResult(null);
+                }
+              }}
               disabled={(date) => !dates.check_in || date <= dates.check_in}
               initialFocus
             />
