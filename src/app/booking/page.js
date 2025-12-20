@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useRoom } from "@/context/roomContext";
 import { useDates } from "@/context/dateContext";
 import DateRangePicker from "@/components/content/DateRangePicker";
+import { toast } from "react-toastify";
 
 function BookingContent() {
   const { selectedRoom, setSelectedRoom } = useRoom();
@@ -15,6 +16,7 @@ function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [rooms, setRooms] = useState([]);
   const [room, setRoom] = useState(null);
   const [result, setResult] = useState(null);
@@ -81,33 +83,49 @@ function BookingContent() {
   };
 
   async function handleSubmit() {
-    if (
-      !formData.fullName ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.roomType
-    ) {
-      alert("Please fill in all required fields");
-      return;
-    }
+    // if (
+    //   !formData.fullName ||
+    //   !formData.email ||
+    //   !formData.phone ||
+    //   !formData.roomType ||
+    //   !formData.checkIn ||
+    //   !formData.checkOut
+    // ) {
+    //   toast.info("Please fill in all required fields");
+    //   return;
+    // }
 
     try {
       setLoading(true);
-      const payload = {
-        room_name: formData.roomType,
-        check_in: toDateOnly(dates.check_in),
-        check_out: toDateOnly(dates.check_out),
-        full_name: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        total_price: formData.totalAmount,
-      };
-
-      const { data, error } = await supabase
-        .from("booking")
-        .insert([payload])
-        .select();
-
+      const res = await fetch("api/booking/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          room_slug: formData.roomType,
+          check_in: toDateOnly(dates.check_in),
+          check_out: toDateOnly(dates.check_out),
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        // Using Toast, using a single point to display which error
+        if (data.errors) {
+          Object.values(data.errors).forEach((msg) => {
+            toast.error(msg);
+          });
+          // Displaying the Errors for the ones affected
+          setFieldErrors(data.errors);
+        } else if (data.error) {
+          toast.error(data.error);
+        } else {
+          toast.error("Something went wrong");
+        }
+        return;
+      }
+      setFieldErrors({});
       setFormData({
         fullName: "",
         email: "",
@@ -125,6 +143,7 @@ function BookingContent() {
       // localStorage.removeItem("selectedRoom");
     } catch (error) {
       console.error("Booking Failed", error.message);
+      toast.error("Room Is Not Available for the selected Date");
     } finally {
       setLoading(false);
     }
@@ -221,7 +240,7 @@ function BookingContent() {
 
                   <div className="grid md:grid-cols-3 gap-6 md:p-8 p-4">
                     {/* Booking Form - Left Side */}
-                    <div className="md:col-span-2">
+                    <div className="md:col-span-2 order-2">
                       <h2 className="text-2xl font-bold text-gray-800 mb-6">
                         Booking Form
                       </h2>
@@ -240,6 +259,11 @@ function BookingContent() {
                             placeholder="Enter your full name"
                             required
                           />
+                          {fieldErrors.full_name && (
+                            <p className="text-red-600 text-sm">
+                              {fieldErrors.full_name}
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -255,6 +279,11 @@ function BookingContent() {
                             placeholder="your.email@example.com"
                             required
                           />
+                          {fieldErrors.email && (
+                            <p className="text-red-600 text-sm">
+                              {fieldErrors.email}
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -270,6 +299,11 @@ function BookingContent() {
                             placeholder="+234 xxx xxx xxxx"
                             required
                           />
+                          {fieldErrors.phone && (
+                            <p className="text-red-600 text-sm">
+                              {fieldErrors.phone}
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -339,17 +373,25 @@ function BookingContent() {
 
                         <button
                           onClick={handleSubmit}
-                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all shadow-lg"
+                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all shadow-lg cursor-pointer"
                         >
                           CONFIRM BOOKING
                         </button>
+                        <div className="md:mt-6 mt-3 md:p-4 p-2 md:w-fit bg-green-50 rounded-lg border border-green-200">
+                          <p className="md:text-sm text-[10px] text-green-800 md:text-justify text-center">
+                            <span className="font-semibold">
+                              ✓ Free Cancellation
+                            </span>{" "}
+                            until 48 hours before check-in
+                          </p>
+                        </div>
                       </div>
                     </div>
 
                     {/* Summary - Right Side */}
-                    <div className="md:col-span-1">
+                    <div className="md:col-span-1 order-1">
                       <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                        Summary
+                        Room Details
                       </h2>
 
                       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border-2 border-indigo-100 space-y-4">
@@ -359,7 +401,7 @@ function BookingContent() {
                           </p>
                           <select
                             name="roomType"
-                            className="text-xl font-bold text-indigo-900"
+                            className="text-xl font-bold text-indigo-900 w-full outline-none"
                             onChange={(e) => {
                               const slug = e.target.value;
                               setFormData((prev) => ({
@@ -382,6 +424,11 @@ function BookingContent() {
                               );
                             })}
                           </select>
+                          {fieldErrors.room_slug && (
+                            <p className="text-red-600 text-sm">
+                              {fieldErrors.room_slug}
+                            </p>
+                          )}
                         </div>
 
                         {isEditing || noDatesSelected ? (
@@ -406,8 +453,11 @@ function BookingContent() {
                                     }));
                                     setIsEditing(false);
                                   } else {
-                                    alert(
-                                      "Please select both check-in and check-out dates."
+                                    // alert(
+                                    //   "Please select both check-in and check-out dates."
+                                    // );
+                                    toast.warning(
+                                      "Please select both check-in and check-out dates"
                                     );
                                   }
                                 }}
@@ -479,15 +529,6 @@ function BookingContent() {
                             Edit Details
                           </button>
                         )}
-                      </div>
-
-                      <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                        <p className="text-sm text-green-800">
-                          <span className="font-semibold">
-                            ✓ Free Cancellation
-                          </span>{" "}
-                          until 48 hours before check-in
-                        </p>
                       </div>
                     </div>
                   </div>

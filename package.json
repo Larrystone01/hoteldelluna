@@ -25,6 +25,7 @@
     "react-flatpickr": "^4.0.11",
     "react-simple-typewriter": "^5.0.1",
     "react-slick": "^0.31.0",
+    "react-toastify": "^11.0.5",
     "simple-icons": "^15.16.1",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^3.3.1"
