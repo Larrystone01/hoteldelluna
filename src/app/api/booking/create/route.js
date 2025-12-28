@@ -29,11 +29,18 @@ export async function POST(req) {
       return NextResponse.json({ error: "Room Not Found" }, { status: 404 });
     }
 
+    await supabaseServer
+      .from("booking")
+      .update({ status: "expired" })
+      .eq("status", "hold")
+      .lt("hold_expires_at", new Date().toISOString());
+
     // Check Availability Again
     const { data: overlappingBookings } = await supabaseServer
       .from("booking")
       .select("id")
       .eq("room_name", room.name)
+      .in("status", ["booked", "hold"])
       .lt("check_in", check_out)
       .gt("check_out", check_in);
 
