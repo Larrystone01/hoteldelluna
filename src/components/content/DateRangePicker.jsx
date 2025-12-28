@@ -8,8 +8,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { useEffect } from "react";
 
-export default function DateRangePicker({ dates, setDates, error, setResult }) {
+export default function DateRangePicker({
+  dates,
+  setDates,
+  error,
+  setResult,
+  onClearError,
+}) {
+  useEffect(() => {
+    if (!error) return;
+
+    const timer = setTimeout(() => {
+      onClearError();
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [error, onClearError]);
   return (
     <div className="flex flex-col gap-6">
       {/* ✅ Check-in Date Picker */}

@@ -12,10 +12,17 @@ export async function POST(request) {
       );
     }
 
+    await supabaseServer
+      .from("booking")
+      .update({ status: "expired" })
+      .eq("status", "hold")
+      .lt("hold_expires_at", new Date().toISOString());
+
     // 1️⃣ Find overlapping bookings
     let bookingQuery = supabaseServer
       .from("booking")
       .select("room_name")
+      .in("status", ["booked", "hold"])
       .lt("check_in", check_out)
       .gt("check_out", check_in);
 

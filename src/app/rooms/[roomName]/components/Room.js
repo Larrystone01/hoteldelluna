@@ -8,7 +8,7 @@ import NavAndFooterWrap from "@/components/wrapper/Index";
 import BreadCrumbs from "@/components/content/breadcrumbs";
 import CheckAvailability from "@/components/checkAvailability";
 
-export default function RoomPage({ Room }) {
+export default function RoomPage({ room }) {
   const [openModal, setOpenModal] = useState(false);
   const handleModal = () => {
     setOpenModal(true);
@@ -22,12 +22,12 @@ export default function RoomPage({ Room }) {
   // }
   return (
     <>
-      <Slider images={[Room.image_url]}>
+      <Slider images={[room.image_url]}>
         <NavAndFooterWrap>
           <section className="container px-6 mx-auto">
             <div className="h-screen flex flex-col justify-center items-center">
               <h1 className="font-bold text-[70px] text-white uppercase">
-                {Room.name}
+                {room.name}
               </h1>
               <div className="">
                 <BreadCrumbs />
@@ -37,25 +37,25 @@ export default function RoomPage({ Room }) {
               <main className="room-details w-full col-span-2">
                 <div className="room-image w-full mx-auto h-[600px] relative cursor-pointer">
                   <Image
-                    src={Room.image_url}
+                    src={room.image_url}
                     // width={700}
                     // height={500}
                     fill
                     className="object-cover"
-                    alt={Room.slug}
+                    alt={room.slug}
                     onClick={handleModal}
                   />
                 </div>
                 <div className="detail-container mt-10 flex flex-col gap-5">
-                  <h1 className="text-[50px] font-bold">{Room.name}</h1>
+                  <h1 className="text-[50px] font-bold">{room.name}</h1>
                   <p className="capitalize font-light text-2xl text-[16px]">
-                    from {Room.price} / night
+                    from {room.price} / night
                   </p>
-                  <p>{Room.description}</p>
+                  <p>{room.description}</p>
                   <div className="peaks">
                     <h1 className="mb-5 text-[30px] font-bold">Amenities</h1>
                     <div className="peak grid grid-cols-2 md:grid-cols-3 space-y-3">
-                      {Room.peaks.map((peak, index) => {
+                      {room.peaks.map((peak, index) => {
                         const Icon = Icons[peak.icon];
                         return (
                           <div
@@ -87,17 +87,17 @@ export default function RoomPage({ Room }) {
                       className="w-[400px] h-[400px] relative"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Image src={Room.image_url} fill alt="modal-img" />
+                      <Image src={room.image_url} fill alt="modal-img" />
                     </div>
                   </section>
                 )}
               </main>
               <div className="col-span-1 mt-7 md:mt-0">
                 <CheckAvailability
-                  room={Room}
-                  room_id={Room.name}
+                  room={room}
+                  room_id={room.name}
                   showAvailabilityStatus={true}
-                  navigateTo={`/booking?room=${Room.slug}`}
+                  navigateTo={`/booking?room=${room.slug}`}
                 />
               </div>
             </div>

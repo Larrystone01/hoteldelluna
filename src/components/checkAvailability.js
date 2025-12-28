@@ -56,9 +56,7 @@ export default function CheckAvailability({
 
       if (newErrors.check_in || newErrors.check_out) {
         setErrors(newErrors);
-        setTimeout(() => {
-          setErrors({ check_in: "", check_out: "" });
-        }, 3000);
+        // setErrors(onClearError({ check_in: "", check_out: "" }));
       }
       return;
     }
@@ -127,6 +125,9 @@ export default function CheckAvailability({
                 setDates={setDates}
                 error={errors}
                 setResult={setResult}
+                onClearError={() => {
+                  setErrors(null);
+                }}
               />
             </div>
           </form>

@@ -20,6 +20,7 @@ function BookingContent() {
   const [rooms, setRooms] = useState([]);
   const [room, setRoom] = useState(null);
   const [result, setResult] = useState(null);
+  const [bookingId, setBookingId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -113,11 +114,25 @@ function BookingContent() {
       if (!res.ok) {
         // Using Toast, using a single point to display which error
         if (data.errors) {
-          Object.values(data.errors).forEach((msg) => {
-            toast.error(msg);
-          });
+          toast.error("Please Enter The Required Fields");
+
           // Displaying the Errors for the ones affected
           setFieldErrors(data.errors);
+          const dateErrors = {};
+
+          if (!dates.check_in)
+            dateErrors.check_in = "Check In date is required";
+          if (!dates.check_out)
+            dateErrors.check_out = "Check Out date is required";
+
+          if (Object.keys(dateErrors).length > 0) {
+            setFieldErrors((prev) => ({
+              ...prev,
+              check_in: dateErrors.check_in,
+              check_out: dateErrors.check_out,
+            }));
+            return;
+          }
         } else if (data.error) {
           toast.error(data.error);
         } else {
@@ -125,7 +140,39 @@ function BookingContent() {
         }
         return;
       }
+      setBookingId(data.bookingId);
       setFieldErrors({});
+      setDates({ check_in: null, check_out: null });
+      setIsEditing(true);
+      sessionStorage.removeItem("selectedRoom");
+    } catch (error) {
+      console.error("Booking Failed", error.message);
+      toast.error("Room Is Not Available for the selected Date");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handlePayment() {
+    if (!bookingId) {
+      toast.error("Booking not created yet");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/payments/initiate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ booking_id: bookingId }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || "Payment initiation failed");
+        return;
+      }
+
       setFormData({
         fullName: "",
         email: "",
@@ -138,14 +185,10 @@ function BookingContent() {
         adults: "",
         specialRequests: "",
       });
-      setDates({ check_in: null, check_out: null });
-      setIsEditing(true);
-      // localStorage.removeItem("selectedRoom");
-    } catch (error) {
-      console.error("Booking Failed", error.message);
-      toast.error("Room Is Not Available for the selected Date");
-    } finally {
-      setLoading(false);
+      // Redirect to Paystack
+      window.location.href = data.authorization_url;
+    } catch {
+      toast.error("Payment error");
     }
   }
 
@@ -155,6 +198,12 @@ function BookingContent() {
       ...prev,
       [name]: value,
     }));
+
+    setFieldErrors((prev) => {
+      if (!prev[name]) return prev; // nothing to clear
+      const { [name]: _, ...rest } = prev;
+      return rest;
+    });
   };
 
   const formattedDate = (value) => {
@@ -174,27 +223,6 @@ function BookingContent() {
   };
 
   const night = getNumberofNights(dates.check_in, dates.check_out);
-
-  // useEffect(() => {
-  //   // If global room state has dates, use them
-  //   if (room?.checkInDate || room?.checkOutDate) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       checkIn: formattedDate(room?.checkInDate),
-  //       checkOut: formattedDate(room?.checkOutDate),
-  //     }));
-  //     return; // stop here, room takes priority
-  //   }
-
-  //   // Otherwise, use local selected dates
-  //   if (dates?.check_in || dates?.check_out) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       checkIn: dates?.check_in ? formattedDate(dates.check_in) : "",
-  //       checkOut: dates?.check_out ? formattedDate(dates.check_out) : "",
-  //     }));
-  //   }
-  // }, [room, dates]);
 
   const backUpImage = "/images/booking-img.jpg";
 
@@ -226,7 +254,7 @@ function BookingContent() {
             Booking confirmation
           </div>
           <div className="md:px-6 px-3 bg-gradient-to-br from-blue-50 to-indigo-100">
-            <div className="container booking-form">
+            <div className="container booking-form mx-auto">
               <div className="min-h-screen w-full md:p-6 pt-6 flex items-center justify-center">
                 <div className="max-w-5xl w-full bg-white shadow-2xl overflow-hidden">
                   <div className="bg-gradient-to-r from-blue-950 to-blue-700 p-6">
@@ -259,9 +287,9 @@ function BookingContent() {
                             placeholder="Enter your full name"
                             required
                           />
-                          {fieldErrors.full_name && (
+                          {fieldErrors.fullName && (
                             <p className="text-red-600 text-sm">
-                              {fieldErrors.full_name}
+                              {fieldErrors.fullName}
                             </p>
                           )}
                         </div>
@@ -371,12 +399,24 @@ function BookingContent() {
                           ></textarea>
                         </div>
 
-                        <button
-                          onClick={handleSubmit}
-                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all shadow-lg cursor-pointer"
-                        >
-                          CONFIRM BOOKING
-                        </button>
+                        {!bookingId && (
+                          <button
+                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all shadow-lg cursor-pointer"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                          >
+                            Confirm Booking
+                          </button>
+                        )}
+
+                        {bookingId && (
+                          <button
+                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all shadow-lg cursor-pointer"
+                            onClick={handlePayment}
+                          >
+                            Pay Now
+                          </button>
+                        )}
                         <div className="md:mt-6 mt-3 md:p-4 p-2 md:w-fit bg-green-50 rounded-lg border border-green-200">
                           <p className="md:text-sm text-[10px] text-green-800 md:text-justify text-center">
                             <span className="font-semibold">
@@ -424,12 +464,12 @@ function BookingContent() {
                               );
                             })}
                           </select>
-                          {fieldErrors.room_slug && (
-                            <p className="text-red-600 text-sm">
-                              {fieldErrors.room_slug}
-                            </p>
-                          )}
                         </div>
+                        {fieldErrors.room_slug && (
+                          <p className="text-red-600 text-sm">
+                            {fieldErrors.room_slug}
+                          </p>
+                        )}
 
                         {isEditing || noDatesSelected ? (
                           <div className="space-y-4">
@@ -438,6 +478,14 @@ function BookingContent() {
                               dates={dates}
                               setDates={setDates}
                               setResult={setResult}
+                              error={fieldErrors}
+                              onClearError={() => {
+                                setFieldErrors((prevErrors) => ({
+                                  ...prevErrors,
+                                  check_in: "",
+                                  check_out: "",
+                                }));
+                              }}
                             />
 
                             {/* Save / Cancel buttons */}
@@ -503,7 +551,11 @@ function BookingContent() {
                             </div>
                           </>
                         ) : (
-                          <DateRangePicker dates={dates} setDates={setDates} />
+                          <DateRangePicker
+                            dates={dates}
+                            setDates={setDates}
+                            error={fieldErrors}
+                          />
                         )}
 
                         {/* Total Amount */}

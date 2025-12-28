@@ -8,7 +8,7 @@ export async function POST(req) {
 
     const errors = {};
 
-    if (!full_name) errors.full_name = "Full name is required";
+    if (!full_name) errors.fullName = "Full name is required";
     if (!room_slug) errors.room_slug = "Room Type is required";
     if (!check_in) errors.check_in = "Check In date is required";
     if (!check_out) errors.check_out = "Check Out date is required";
@@ -62,13 +62,23 @@ export async function POST(req) {
           email,
           phone,
           total_price,
+          status: "hold",
+          // hold_expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString,
+          amount_expected: total_price,
         },
       ])
       .select()
       .single();
 
     if (bookingError) throw bookingError;
-    return NextResponse.json({ success: true, total_price });
+    return NextResponse.json(
+      {
+        success: true,
+        total_price,
+        bookingId: booking.id,
+      },
+      { status: 200 }
+    );
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
