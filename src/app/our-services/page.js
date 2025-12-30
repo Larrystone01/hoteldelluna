@@ -22,6 +22,6 @@ export const metadata = {
   },
 };
 
-export default function () {
+export default function Page() {
   return <ServicesPage />;
 }
