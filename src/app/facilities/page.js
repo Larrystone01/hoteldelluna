@@ -6,6 +6,27 @@ import { facilitiesData } from "@/lib/data";
 import FacilitiesShowcase from "./component/ServiceShowcase";
 import BreadCrumbs from "@/components/content/breadcrumbs";
 
+export const metadata = {
+  title: "Hotel Facilities | Hotel Del Luna, Ilorin",
+  description:
+    "Discover the premium facilities at Hotel Del Luna in Ilorin including restaurant, spa, pool, and modern amenities for a luxurious stay.",
+  alternates: { canonical: "https://hoteldelluna.vercel.app/facilities" },
+  openGraph: {
+    title: "Hotel Facilities | Hotel Del Luna, Ilorin",
+    description:
+      "Explore Hotel Del Luna’s facilities in Ilorin. Enjoy luxury accommodations, modern amenities, and exceptional services during your stay.",
+    url: "https://hoteldelluna.vercel.app/facilities",
+    type: "website",
+    images: [
+      {
+        url: "/images/gym.jpgg",
+        width: 1200,
+        height: 630,
+        alt: "Hotel Del Luna Facilities",
+      },
+    ],
+  },
+};
 const page = () => {
   return (
     // <GlobalContextProvider imageData={facilitiesData}>

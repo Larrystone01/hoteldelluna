@@ -1,7 +1,7 @@
 import HomeClient from "./homeclient";
 
 export const metadata = {
-  title: "Luxury Hotel in Ilorin | Hotel Del Luna",
+  title: "Hotel Del Luna | Luxury Hotel in Ilorin",
   description:
     "Hotel Del Luna is a luxury hotel in Ilorin offering comfortable rooms, modern facilities, and exceptional service for business and leisure travelers. Book your stay today.",
   keywords: [
@@ -14,17 +14,17 @@ export const metadata = {
     "Hotel amenities Ilorin",
   ],
   alternates: {
-    canonical: "https://hoteldelluna.com",
+    canonical: "https://hoteldelluna.vercel.app",
   },
   openGraph: {
     title: "Luxury Hotel in Ilorin | Hotel Del Luna",
     description:
       "Stay at Hotel Del Luna in Ilorin. Comfort, elegance, and excellent hospitality.",
-    url: "https://hoteldelluna.com",
+    url: "https://hoteldelluna.vercel.app",
     type: "website",
     images: [
       {
-        url: "/images/og-home.jpg",
+        url: "/images/lobby.jpg",
         width: 1200,
         height: 630,
         alt: "Hotel Del Luna Ilorin",
@@ -36,10 +36,14 @@ export const metadata = {
     title: "Luxury Hotel in Ilorin | Hotel Del Luna",
     description:
       "Experience comfort, elegance, and exceptional hospitality at Hotel Del Luna in Ilorin.",
-    images: ["/images/og-home.jpg"],
+    images: ["/images/lobby.jpg"],
   },
 };
 
 export default function HomePage() {
-  return <HomeClient />;
+  return (
+    <>
+      <HomeClient />;
+    </>
+  );
 }

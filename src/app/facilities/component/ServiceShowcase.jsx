@@ -21,6 +21,60 @@ export default function FacilitiesShowcase({
 
   return (
     <>
+      <SeoPage
+        hidden={true}
+        title="Hotel Facilities — Hotel Del Luna in Ilorin"
+        intro="Hotel Del Luna offers modern facilities and premium amenities for guests seeking comfort, luxury, and relaxation in Ilorin."
+        sections={[
+          {
+            heading: "Restaurant and Dining",
+            content:
+              "Savor delicious meals at our in-house restaurant featuring local and international cuisine.",
+            list: [
+              "Buffet and à la carte options",
+              "Room service available",
+              "Fresh and high-quality ingredients",
+            ],
+          },
+          {
+            heading: "Recreational Facilities",
+            content:
+              "Relax and unwind with our recreational options designed for comfort and leisure.",
+            list: ["Swimming pool", "Spa and wellness center", "Fitness gym"],
+          },
+          {
+            heading: "Business and Event Services",
+            content:
+              "Host meetings or events with our professional business and conference facilities.",
+            list: [
+              "Conference rooms",
+              "High-speed internet",
+              "Projectors and AV equipment",
+            ],
+          },
+          {
+            heading: "Guest Services",
+            content:
+              "Our dedicated staff ensure a seamless stay with personalized services.",
+            list: [
+              "24-hour front desk",
+              "Concierge services",
+              "Housekeeping and laundry",
+            ],
+          },
+        ]}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Hotel",
+          name: "Hotel Del Luna",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Ilorin",
+            addressCountry: "NG",
+          },
+          url: "https://hoteldelluna.vercel.app",
+        }}
+      />
       <section className="py-10">
         <div className="facilities-hero border-b pb-10">
           <h1 className="uppercase relative flex items-center gap-3 text-yellow-300 mb-10">

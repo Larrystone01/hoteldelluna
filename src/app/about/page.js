@@ -4,11 +4,77 @@ import NavAndFooterWrap from "@/components/wrapper/Index";
 import Slider from "@/components/content/backgroundSlider";
 import Button from "@/components/Button";
 import BreadCrumbs from "@/components/content/breadcrumbs";
+import SeoPage from "../components/seopage";
+
+export const metadata = {
+  title: "About Us | Hotel Del Luna, Ilorin",
+  description:
+    "Learn about Hotel Del Luna in Ilorin, our mission, history, and commitment to providing luxury accommodations and exceptional hospitality.",
+  alternates: { canonical: "https://hoteldelluna.com/about" },
+  openGraph: {
+    title: "About Us | Hotel Del Luna, Ilorin",
+    description:
+      "Discover Hotel Del Luna’s story, mission, and dedication to providing comfortable rooms and premium facilities in Ilorin.",
+    url: "https://hoteldelluna.vercel.app/about",
+    type: "website",
+    images: [
+      {
+        url: "/images/og-about.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Hotel Del Luna About Us",
+      },
+    ],
+  },
+};
 
 export default function AboutPage() {
   return (
     <Slider images={["/images/lobby.jpg"]}>
       <NavAndFooterWrap>
+        <SeoPage
+          hidden={true}
+          title="About Hotel Del Luna — Luxury Hotel in Ilorin"
+          intro="Hotel Del Luna in Ilorin offers premium accommodations, modern facilities, and exceptional hospitality. Learn about our story, mission, and commitment to guests."
+          sections={[
+            {
+              heading: "Our Mission",
+              content:
+                "To provide guests with a luxurious and comfortable stay in Ilorin, combining modern amenities with exceptional service.",
+            },
+            {
+              heading: "Our Story",
+              content:
+                "Hotel Del Luna was founded to offer travelers in Ilorin a premium hospitality experience. We focus on comfort, safety, and attention to detail.",
+            },
+            {
+              heading: "Our Values",
+              content:
+                "We prioritize guest satisfaction, quality service, and maintaining a peaceful and elegant environment.",
+              list: [
+                "Exceptional hospitality",
+                "Clean and safe environment",
+                "Guest-first approach",
+              ],
+            },
+            {
+              heading: "Why Choose Us",
+              content:
+                "Guests choose Hotel Del Luna for its welcoming atmosphere, modern amenities, and prime location in Ilorin.",
+            },
+          ]}
+          schema={{
+            "@context": "https://schema.org",
+            "@type": "Hotel",
+            name: "Hotel Del Luna",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Ilorin",
+              addressCountry: "NG",
+            },
+            url: "https://hoteldelluna.vercel.app",
+          }}
+        />
         <div className="container px-6 mx-auto">
           <section className="about-hero">
             <div className="flex justify-center items-center text-white h-screen text-center">
