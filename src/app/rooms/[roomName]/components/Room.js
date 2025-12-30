@@ -13,13 +13,7 @@ export default function RoomPage({ room }) {
   const handleModal = () => {
     setOpenModal(true);
   };
-  // console.log(room);
 
-  // if (!Room) {
-  //   return (
-  //     <div className="text-center py-20 text-red-500">Room not found.</div>
-  //   );
-  // }
   return (
     <>
       <Slider images={[room.image_url]}>
