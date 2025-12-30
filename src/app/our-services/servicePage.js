@@ -3,6 +3,7 @@ import { useState } from "react";
 import { services } from "@/lib/data";
 import Slider from "@/components/content/backgroundSlider";
 import NavAndFooterWrap from "@/components/wrapper/Index";
+import SeoPage from "../components/seopage";
 import Link from "next/link";
 
 export default function ServicesPage() {
