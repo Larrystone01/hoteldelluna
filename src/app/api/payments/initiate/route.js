@@ -31,6 +31,10 @@ export async function POST(req) {
       booking.hold_expires_at &&
       new Date(booking.hold_expires_at) < new Date()
     ) {
+      await supabaseServer
+        .from("booking")
+        .update({ status: "expired" })
+        .eq("id", booking.id);
       return NextResponse.json(
         { error: "Booking Hold has expired" },
         { status: 410 }
@@ -56,16 +60,6 @@ export async function POST(req) {
     const customerData = await customerRes.json();
     console.log(customerData);
 
-    // if (!customerRes.ok || !customerData.data) {
-    //   console.error("Paystack customer creation failed:", customerData);
-    //   return NextResponse.json(
-    //     {
-    //       error: customerData.message || "Failed to create customer",
-    //       details: customerData,
-    //     },
-    //     { status: 400 }
-    //   );
-    // }
     const customerCode = customerData.data.customer_code;
 
     const paystackRes = await fetch(PAYSTACK_URL, {

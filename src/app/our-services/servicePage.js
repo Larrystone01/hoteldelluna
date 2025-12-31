@@ -143,7 +143,7 @@ export default function ServicesPage() {
           </div>
 
           {/* Premium Features Section */}
-          <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-3xl p-12 text-white mb-20">
+          <div className="bg-slate-800 rounded-3xl p-12 text-white mb-20">
             <h2 className="text-4xl font-bold text-center mb-12">
               Why Choose Us
             </h2>

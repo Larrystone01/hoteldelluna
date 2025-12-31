@@ -39,14 +39,7 @@ export default function CheckAvailability({
     }
   }, [result]);
 
-  // useEffect(() => {
-  //   if (room_id && dates.check_in && dates.check_out) {
-  //     handleCheck();
-  //   }
-  // }, []);
-
   async function handleCheck() {
-    // e.preventDefault();
     if (!dates.check_in || !dates.check_out) {
       alert("Please Select both the check-in and the check-out dates");
       let newErrors = { check_in: "", check_out: "" };
@@ -115,10 +108,9 @@ export default function CheckAvailability({
             // onSubmit={handleCheck}
             id="availability-form"
           >
-            <h1 className="text-center text-[25px]">Check Availability</h1>
-            <p className="flex justify-center items-center text-[12px] my-4 text-center">
-              required field are followed by <Asterisk color="red" size={10} />
-            </p>
+            <h1 className="text-center text-[25px] uppercase pb-6">
+              Check Availability
+            </h1>
             <div className="input-side w-full">
               <DateRangePicker
                 dates={dates}
