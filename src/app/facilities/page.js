@@ -1,7 +1,6 @@
 import React from "react";
 import NavAndFooterWrap from "@/components/wrapper/Index";
 import Slider from "@/components/content/backgroundSlider";
-import { GlobalContextProvider } from "@/context/context";
 import { facilitiesData } from "@/lib/data";
 import FacilitiesShowcase from "./component/ServiceShowcase";
 import BreadCrumbs from "@/components/content/breadcrumbs";
@@ -29,7 +28,6 @@ export const metadata = {
 };
 const page = () => {
   return (
-    // <GlobalContextProvider imageData={facilitiesData}>
     <Slider images={["/images/hotel-view-3.jpg"]}>
       <NavAndFooterWrap>
         <div className="container px-6 mx-auto">
@@ -52,7 +50,6 @@ const page = () => {
         </div>
       </NavAndFooterWrap>
     </Slider>
-    // </GlobalContextProvider>
   );
 };
 

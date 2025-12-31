@@ -1,4 +1,3 @@
-"use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { RoomProvider } from "@/context/roomContext";
@@ -15,6 +14,12 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const metadata = {
+  icons: {
+    icon: "/icon.svg", // Points to public/logo.svg
+  },
+};
 
 export default function RootLayout({ children }) {
   return (

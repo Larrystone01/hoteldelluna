@@ -1,0 +1,76 @@
+<svg
+  viewBox="0 0 400 260"
+  xmlns="http://www.w3.org/2000/svg"
+  style="width: 100%; height: auto;"
+>
+  <style>
+    /* Default to black for light theme */
+    .logo-element {
+      fill: #000000;
+    }
+    
+    /* Automatically use white when system prefers dark mode */
+    @media (prefers-color-scheme: dark) {
+      .logo-element {
+        fill: #ffffff;
+      }
+    }
+  </style>
+  
+  <g transform="translate(220, 130)">
+    <!-- Left decorative dot aligned with D -->
+    <circle cx="-130" cy="0" r="6" class="logo-element" />
+    
+    <!-- HDL monogram -->
+    <text
+      x="-60"
+      y="0"
+      font-family="'EB Garamond', serif"
+      font-size="95"
+      font-weight="100"
+      class="logo-element"
+      text-anchor="middle"
+    >
+      H
+    </text>
+    <text
+      x="-30"
+      y="20"
+      font-family="'EB Garamond', serif"
+      font-size="95"
+      font-weight="100"
+      class="logo-element"
+      text-anchor="middle"
+    >
+      D
+    </text>
+    <text
+      x="1"
+      y="45"
+      font-family="'EB Garamond', serif"
+      font-size="95"
+      font-weight="100"
+      class="logo-element"
+      text-anchor="middle"
+    >
+      L
+    </text>
+    
+    <!-- Right decorative dot aligned with D -->
+    <circle cx="50" cy="0" r="6" class="logo-element" />
+  </g>
+
+  <!-- HOTEL DEL LUNA text -->
+  <text
+    x="200"
+    y="240"
+    font-family="'Montserrat', 'Arial', sans-serif"
+    font-size="50"
+    font-weight="100"
+    class="logo-element"
+    text-anchor="middle"
+    letter-spacing="11"
+  >
+    HOTEL DEL LUNA
+  </text>
+</svg>
