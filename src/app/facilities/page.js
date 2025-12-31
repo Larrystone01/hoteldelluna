@@ -19,7 +19,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/gym.jpgg",
+        url: "https://res.cloudinary.com/dfex2qeg7/image/upload/gym_gjbnut.jpg",
         width: 1200,
         height: 630,
         alt: "Hotel Del Luna Facilities",

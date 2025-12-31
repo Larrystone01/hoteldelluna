@@ -24,7 +24,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/lobby.jpg",
+        url: "https://res.cloudinary.com/dfex2qeg7/image/upload/hotel-view-bg_ycopg0.jpg",
         width: 1200,
         height: 630,
         alt: "Hotel Del Luna Ilorin",
@@ -36,7 +36,10 @@ export const metadata = {
     title: "Luxury Hotel in Ilorin | Hotel Del Luna",
     description:
       "Experience comfort, elegance, and exceptional hospitality at Hotel Del Luna in Ilorin.",
-    images: ["/images/lobby.jpg"],
+    images: [
+      "https://res.cloudinary.com/dfex2qeg7/image/upload/booking-img_x700ue.jpg",
+      "https://res.cloudinary.com/dfex2qeg7/image/upload/hotel-view-bg_ycopg0.jpg",
+    ],
   },
 };
 

@@ -17,7 +17,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/skyline-deluxe-2.jpg",
+        url: "https://res.cloudinary.com/dfex2qeg7/image/upload/grand-vista_evf4te.jpg",
         width: 1200,
         height: 630,
         alt: "Hotel Del Luna Rooms and Suites",

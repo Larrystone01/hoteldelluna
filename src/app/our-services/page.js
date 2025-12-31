@@ -9,11 +9,11 @@ export const metadata = {
     title: "Hotel Services | Hotel Del Luna, Ilorin",
     description:
       "Discover the premium services available at Hotel Del Luna in Ilorin. Experience comfort, luxury, and excellent hospitality during your stay.",
-    url: "https://hoteldelluna.vercel.app/services",
+    url: "https://hoteldelluna.vercel.app/our-services",
     type: "website",
     images: [
       {
-        url: "/images/meeting-room.jpg",
+        url: "https://res.cloudinary.com/dfex2qeg7/image/upload/lounge-bar_joi4md.jpg",
         width: 1200,
         height: 630,
         alt: "Hotel Del Luna Services",
