@@ -126,9 +126,13 @@ export default function CheckAvailability({
           {showAvailabilityStatus &&
             result !== null &&
             (result ? (
-              <p>This Room is available for Booking</p>
+              <p className="text-green-500 pt-3 uppercase">
+                This Room is available for Booking
+              </p>
             ) : (
-              <p>This Room is Booked for the chosen date</p>
+              <p className="text-red-500 pt-3 uppercase">
+                This Room is Booked for the chosen date
+              </p>
             ))}
         </div>
         <button

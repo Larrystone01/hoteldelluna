@@ -17,10 +17,49 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   icons: {
-    icon: "/icon.svg", // Points to public/logo.svg
+    icon: [
+      // Dark theme icons (white logo for dark backgrounds)
+      {
+        url: "/icon-light.png",
+        media: "(prefers-color-scheme: dark)",
+        type: "image/png",
+      },
+      {
+        url: "/icon-light-32x32.png",
+        media: "(prefers-color-scheme: dark)",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/icon-light-16x16.png",
+        media: "(prefers-color-scheme: dark)",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      // Light theme icons (dark logo for light backgrounds)
+      {
+        url: "/icon-dark.png",
+        media: "(prefers-color-scheme: light)",
+        type: "image/png",
+      },
+      {
+        url: "/icon-dark-32x32.png",
+        media: "(prefers-color-scheme: light)",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/icon-dark-16x16.png",
+        media: "(prefers-color-scheme: light)",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      "/icon-dark.ico",
+    ],
+    shortcut: ["/icon-light.ico", "/icon-dark.ico"],
+    apple: "/apple-touch-icon-dark.png",
   },
 };
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
