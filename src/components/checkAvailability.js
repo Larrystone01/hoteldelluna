@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Asterisk } from "lucide-react";
 import DateRangePicker from "./content/DateRangePicker";
 import { useRoom } from "@/context/roomContext";
 import { useDates } from "@/context/dateContext";
@@ -67,7 +66,7 @@ export default function CheckAvailability({
         body: JSON.stringify({
           check_in: dates.check_in,
           check_out: dates.check_out,
-          ...(room_id && { room_name: room_id }),
+          ...(room_id && { room_id: room_id }),
         }),
       });
       const data = await res.json();
@@ -131,7 +130,7 @@ export default function CheckAvailability({
               </p>
             ) : (
               <p className="text-red-500 pt-3 uppercase">
-                This Room is Booked for the chosen date
+                This Room is Booked for the chosen dates
               </p>
             ))}
         </div>

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import CheckAvailability from "@/components/checkAvailability";
 import { useRoom } from "@/context/roomContext";
 
-export default function RoomDisplay() {
+export default function RoomDisplay({ room }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,22 +15,7 @@ export default function RoomDisplay() {
   const { selectedRoom, setSelectedRoom } = useRoom();
   const router = useRouter();
   useEffect(() => {
-    async function fetchRooms() {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase.from("rooms").select("*");
-        if (error) {
-          console.error("Error fetching Rooms:", error.message);
-          setError("Error Loading Rooms Kindly Refresh the page");
-        }
-        setRooms(data || []);
-      } catch (err) {
-        console.error("Error fetching rooms:", err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchRooms();
+    setRooms(room);
   }, []);
 
   const roomsPerPage = 4;

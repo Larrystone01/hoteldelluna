@@ -3,6 +3,7 @@ import NavAndFooterWrap from "@/components/wrapper/Index";
 import RoomDisplay from "./components/roomshowcase";
 import BreadCrumbs from "@/components/content/breadcrumbs";
 import SeoPage from "../components/seopage";
+import { supabaseServer } from "@/lib/supabaseServer";
 
 export const metadata = {
   title: "Rooms & Suites | Hotel Del Luna, Ilorin",
@@ -26,7 +27,13 @@ export const metadata = {
   },
 };
 
-export default function HotelRooms() {
+export default async function HotelRooms() {
+  const { data: rooms, error } = await supabaseServer.from("rooms").select("*");
+
+  if (error) {
+    console.error(error);
+    throw new error("Failed to Fetch Rooms");
+  }
   return (
     <>
       <Slider images={["/images/skyline-deluxe-2.jpg"]}>
@@ -89,7 +96,7 @@ export default function HotelRooms() {
               </div>
             </div>
             <BreadCrumbs />
-            <RoomDisplay />
+            <RoomDisplay room={rooms} />
           </section>
         </NavAndFooterWrap>
       </Slider>

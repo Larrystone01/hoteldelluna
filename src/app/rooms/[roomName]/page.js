@@ -1,5 +1,5 @@
 import { supabaseServer } from "@/lib/supabaseServer";
-import Room from "./components/SingleRoom";
+import RoomPage from "./components/Room";
 
 export default async function SingleRoom({ params }) {
   const { roomName } = await params;
@@ -19,5 +19,5 @@ export default async function SingleRoom({ params }) {
     );
   }
 
-  return <Room room={room} />;
+  return <RoomPage room={room} />;
 }
